@@ -1,9 +1,4 @@
 <template>
-  <nav>
-    <h1>
-      <span>Car Gallery</span>
-    </h1>
-  </nav>
   <div id="carComponent">
     <GalleryCard :cars="cars" @alertPrice="displayPrice" />
   </div>
@@ -163,8 +158,8 @@ export default {
     }
   },
   methods: {
-    displayPrice(car) {
-      alert(car.name + "'s Price is: " + car.price);
+    displayPrice(name, price) {
+      alert(name + "'s Price is: " + price);
     }
   }
 }
@@ -173,20 +168,6 @@ export default {
 <style>
 body {
   margin: 0;
-}
-
-h1 {
-  text-align: center;
-  font-size: xxx-large;
-}
-
-h1 span {
-  color: #184b00;
-  cursor: pointer;
-}
-
-h1 span:hover {
-  color: green;
 }
 
 #carComponent {
