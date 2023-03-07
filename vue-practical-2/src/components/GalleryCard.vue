@@ -9,16 +9,34 @@
         <div class="cardDsc">
             <p>{{ car.desc }}</p>
         </div>
-        <button class="priceBtn" @click.prevent="showPrice(car)">INFO</button>
+        <button class="priceBtn" @click.prevent="showPrice(car)" :disabled="checkForPrice(car)"
+            :class="{ notAvailable: car.price === '' }">
+            {{ priceBtnTxt }}
+        </button>
     </div>
 </template>
 
 <script>
 export default {
+    data() {
+        return {
+            priceBtnTxt: "",
+        }
+    },
     props: ["cars"],
+    emits: ["alertPrice"],
     methods: {
         showPrice(car) {
-            alert(car.name + "'s Price is: " + car.price);
+            this.$emit("alertPrice", car)
+        },
+        checkForPrice(car) {
+            if (car.price === "") {
+                this.priceBtnTxt = "Available Soon!";
+                return true;
+            } else {
+                this.priceBtnTxt = "INFO";
+                return false;
+            }
         }
     }
 }
@@ -58,5 +76,10 @@ export default {
 .priceBtn:hover {
     color: #c7ffab;
     background-color: green;
+}
+
+.notAvailable {
+    background-color: #1a4d01;
+    cursor: not-allowed;
 }
 </style>

@@ -1,7 +1,11 @@
 <template>
-  <h1><span>Cars</span></h1>
+  <nav>
+    <h1>
+      <span>Car Gallery</span>
+    </h1>
+  </nav>
   <div id="carComponent">
-    <GalleryCard :cars="cars" />
+    <GalleryCard :cars="cars" @alertPrice="displayPrice" />
   </div>
 </template>
 
@@ -27,7 +31,7 @@ export default {
           name: "Audi Q7",
           image: require("./images/Audi_Q7.jpeg"),
           desc: "It is a midsize luxury SUV with sleek design, impressive performance, and a spacious and high-tech interior.",
-          price: "₹90 Lakh"
+          price: ""
         },
         {
           id: 3,
@@ -55,14 +59,14 @@ export default {
           name: "Kia Seltos",
           image: require("./images/Kia_Seltos.jpeg"),
           desc: "Subcompact SUV known for its stylish design, impressive performance, and advanced safety and technology features.",
-          price: "₹14 Lakh"
+          price: ""
         },
         {
           id: 7,
           name: "Mahindra XUV700",
           image: require("./images/mahindra-xuv700.webp"),
           desc: "XUV700 is a highly-anticipated midsize SUV with advanced safety features, luxurious interiors, and powerful performance capabilities.",
-          price: "₹20 Lakh"
+          price: ""
         },
         {
           id: 8,
@@ -76,7 +80,7 @@ export default {
           name: "Mercedes C-Class",
           image: require("./images/mercedes-c-class.webp"),
           desc: "Luxurious compact sedan known for its advanced technology, refined driving dynamics, and comfortable and high-tech interior.",
-          price: "₹65 Lakh"
+          price: ""
         },
         {
           id: 10,
@@ -111,7 +115,7 @@ export default {
           name: "Tata Harrier",
           image: require("./images/tata-harrier.webp"),
           desc: "A midsize SUV with a bold and contemporary design, spacious and feature-packed interior, and powerful performance capabilities.",
-          price: "₹23 Lakh"
+          price: ""
         },
         {
           id: 15,
@@ -153,9 +157,14 @@ export default {
           name: "Innova Crysta",
           image: require("./images/innova-crysta.jpeg"),
           desc: "A popular and reliable midsize MPV known for its spacious and comfortable cabin, advanced features, and efficient engines.",
-          price: "₹25 Lakh"
+          price: ""
         }
       ],
+    }
+  },
+  methods: {
+    displayPrice(car) {
+      alert(car.name + "'s Price is: " + car.price);
     }
   }
 }
