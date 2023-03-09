@@ -1,15 +1,13 @@
 <template>
-  <div id="carComponent">
-    <GalleryCard :cars="cars" @alertPrice="displayPrice" />
-  </div>
+  <HomeView :cars="cars" />
 </template>
 
 <script>
-import GalleryCard from "./components/GalleryCard.vue"
+import HomeView from './components/HomeView.vue';
 export default {
   name: "App",
   components: {
-    GalleryCard,
+    HomeView,
   },
   data() {
     return {
@@ -60,7 +58,7 @@ export default {
           id: 7,
           name: "Mahindra XUV700",
           image: require("./images/mahindra-xuv700.webp"),
-          desc: "XUV700 is a highly-anticipated midsize SUV with advanced safety features, luxurious interiors, and powerful performance capabilities.",
+          desc: "XUV700 is a highly-anticipated midsize SUV with advanced safety features, luxurious interiors, and powerful performance capabilities.as fs fdada da dg fqaqwdqwfdq dqd qdd q",
           price: ""
         },
         {
@@ -157,24 +155,13 @@ export default {
       ],
     }
   },
-  methods: {
-    displayPrice(name, price) {
-      alert(name + "'s Price is: " + price);
-    }
-  }
 }
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Roboto:wght@500&display=swap');
+
 body {
   margin: 0;
-}
-
-#carComponent {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  text-align: center;
-  background-color: rgb(240, 240, 240);
 }
 </style>

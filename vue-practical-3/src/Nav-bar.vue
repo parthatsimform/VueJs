@@ -7,9 +7,14 @@
 </template>
 
 <style>
+* {
+    box-sizing: border-box;
+}
+
 h1 {
     text-align: center;
     font-size: xxx-large;
+    font-family: 'Alfa Slab One', cursive;
 }
 
 h1 span {

@@ -9,10 +9,12 @@
         <div class="cardDsc">
             <p>{{ car.desc }}</p>
         </div>
-        <button class="priceBtn" @click.prevent="showPrice(car.name, car.price)" :disabled="!car.price"
-            :class="{ notAvailable: !car.price }">
-            {{ checkForPrice(car.price) }}
-        </button>
+        <div class="info">
+            <button class="priceBtn" @click.prevent="showPrice(car.name, car.price)" :disabled="!car.price"
+                :class="{ notAvailable: !car.price }">
+                {{ checkForPrice(car.price) }}
+            </button>
+        </div>
     </div>
 </template>
 
@@ -22,7 +24,9 @@ export default {
     emits: ["alertPrice"],
     methods: {
         showPrice(name, price) {
-            this.$emit("alertPrice", name, price)
+            if (!this.$parent.viewForm) {
+                this.$emit("alertPrice", name, price)
+            }
         },
         checkForPrice(price) {
             if (price) {
@@ -39,8 +43,7 @@ export default {
 .card {
     width: 300px;
     height: auto;
-    padding: 5px;
-    margin: 10px;
+    margin: 0 10px 10px;
     border-radius: 10px;
     background-color: #fff;
 }
@@ -50,9 +53,26 @@ export default {
     box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.1);
 }
 
+.cardTitle {
+    font-family: 'Roboto', sans-serif;
+}
+
 .cardImg {
     width: 300px;
     height: 200px;
+}
+
+.cardDsc {
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 0 5px;
+    font-weight: 100;
+    height: 112px;
+    overflow: hidden;
+}
+
+.info {
+    display: flex;
+    flex-direction: column-reverse;
 }
 
 .priceBtn {
