@@ -1,5 +1,5 @@
 <template>
-    <div class="card" v-for="car in cars" :key="car.id">
+    <div class="card">
         <div class="cardTitle">
             <h2>{{ car.name }}</h2>
         </div>
@@ -11,10 +11,12 @@
         </div>
         <div class="manipulateData">
             <div class="editBtnDiv">
-                <button class="editBtn" @click.prevent.stop="editCar(car)">Edit</button>
+                <button class="editBtn" @click.prevent.stop="editCar(car)"><i class="fa-solid fa-pen-to-square"></i>
+                    Edit</button>
             </div>
             <div class="deleteBtnDiv">
-                <button class="deleteBtn" @click.prevent.stop="deleteCar(car)">Delete</button>
+                <button class="deleteBtn" @click.prevent.stop="deleteCar(car)"><i class="fa-solid fa-trash-can"></i>
+                    Delete</button>
             </div>
         </div>
         <div class="info">
@@ -35,11 +37,12 @@ export default {
             editableCar: {},
         }
     },
-    props: ["cars"],
+    props: ["car"],
     emits: ["alertPrice", "editableCar", "isEdit", "deleteCar"],
     methods: {
         showPrice(name, price) {
-            if (!this.$parent.viewForm && !this.isEdit) {
+            if (!this.$parent.viewForm && !this.$parent.editForm) {
+                console.log(this.isEdit);
                 this.$emit("alertPrice", name, price)
             }
         },
@@ -57,7 +60,7 @@ export default {
             this.$emit("isEdit", this.isEdit)
         },
         deleteCar(car) {
-            if (!this.$parent.viewForm && !this.isEdit) {
+            if (!this.$parent.viewForm && !this.$parent.editForm) {
                 this.$emit("deleteCar", car);
             }
         }
@@ -99,12 +102,15 @@ export default {
 .info {
     display: flex;
     flex-direction: column-reverse;
+    align-items: center;
 }
 
 .priceBtn {
     border: 1px solid green;
-    border-radius: 5px;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
     padding: 7px 30px;
+    width: 100%;
     background-color: green;
     color: rgb(255, 255, 255);
     font-size: 14px;
@@ -118,13 +124,19 @@ export default {
 }
 
 .notAvailable {
-    background-color: #1a4d01;
+    background-color: #ebffd8;
+    color: black;
     cursor: not-allowed;
+}
+
+.notAvailable:hover {
+    color: black;
+    background-color: #ebffd8;
 }
 
 .manipulateData {
     display: flex;
-    margin: 0 5px 5px;
+    margin: 0 0 10px;
     justify-content: space-between;
 }
 
