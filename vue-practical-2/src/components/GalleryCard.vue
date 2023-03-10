@@ -1,5 +1,5 @@
 <template>
-    <div class="card" v-for="car in cars" :key="car.name">
+    <div class="card">
         <div class="cardTitle">
             <h2>{{ car.name }}</h2>
         </div>
@@ -18,7 +18,7 @@
 
 <script>
 export default {
-    props: ["cars"],
+    props: ["car"],
     emits: ["alertPrice"],
     methods: {
         showPrice(name, price) {
@@ -72,7 +72,12 @@ export default {
 }
 
 .notAvailable {
-    background-color: #1a4d01;
+    background-color: #ff6161;
     cursor: not-allowed;
+}
+
+.notAvailable:hover {
+    color: white;
+    background-color: #ff6161;
 }
 </style>

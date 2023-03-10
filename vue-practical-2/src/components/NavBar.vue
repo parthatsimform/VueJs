@@ -6,6 +6,12 @@
     </nav>
 </template>
 
+<script>
+export default {
+    name: "NavBar",
+}
+</script>
+
 <style>
 h1 {
     text-align: center;
