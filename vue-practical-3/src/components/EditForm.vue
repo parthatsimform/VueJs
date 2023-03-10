@@ -1,14 +1,14 @@
 <template>
-    <div class="addCarPopup">
+    <div class="editCarPopup">
         <div class="formTitle">
-            <h2>Add Car</h2>
+            <h2>Edit Details</h2>
         </div>
         <hr />
-        <form class="carForm" @submit.prevent="addCarData">
+        <form class="carForm" @submit.prevent="editCarData">
             <label for="carName">Car Name:</label>
             <input type="text" id="carName" v-model="name" />
             <label for="carImage">Car Image:</label>
-            <input type="text" id="carImage" v-model="image" />
+            <input type="url" id="carImage" v-model="image" />
             <label for="carDesc">Description:</label>
             <textarea id="carDesc" cols="30" rows="4" v-model="desc" />
             <label for="carPrice">Car Price(₹):</label>
@@ -19,20 +19,22 @@
 </template>
 
 <script>
+
 export default {
-    name: "CarForm",
-    emits: ["addCarData"],
+    name: "EditForm",
+    props: ["car"],
+    emits: ['editCarData'],
     data() {
         return {
-            id: "",
-            name: "",
-            image: "",
-            desc: "",
-            price: "",
+            id: this.car.id,
+            name: this.car.name,
+            image: this.car.image,
+            desc: this.car.desc,
+            price: this.car.price,
         }
     },
     methods: {
-        addCarData() {
+        editCarData() {
             const car = {
                 id: this.id,
                 name: this.name,
@@ -40,15 +42,15 @@ export default {
                 desc: this.desc,
                 price: this.price,
             }
-            this.$emit("addCarData", car)
-            this.$parent.viewForm = false;
-        },
+            this.$emit("editCarData", car)
+            this.$parent.editForm = false;
+        }
     }
 }
 </script>
 
 <style>
-.addCarPopup {
+.editCarPopup {
     background-color: white;
     border: none;
     border-radius: 10px;
