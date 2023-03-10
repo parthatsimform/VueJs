@@ -1,5 +1,5 @@
 <template>
-    <div class="card" v-for="car in cars" :key="car.name">
+    <div class="card">
         <div class="cardTitle">
             <h2>{{ car.name }}</h2>
         </div>
@@ -15,7 +15,7 @@
 
 <script>
 export default {
-    props: ["cars"],
+    props: ["car"],
     methods: {
         showPrice(car) {
             alert(car.name + "'s Price is: " + car.price);

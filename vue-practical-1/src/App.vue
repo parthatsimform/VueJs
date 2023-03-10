@@ -1,7 +1,10 @@
 <template>
   <h1><span>Cars</span></h1>
   <div id="carComponent">
-    <GalleryCard :cars="cars" />
+    <div v-for="car in cars" :key="car.id">
+      <GalleryCard :car="car" />
+    </div>
+
   </div>
 </template>
 
