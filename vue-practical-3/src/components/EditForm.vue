@@ -1,7 +1,12 @@
 <template>
     <div class="editCarPopup">
-        <div class="formTitle">
-            <h2>Edit Details</h2>
+        <div class="formHeader">
+            <div class="formTitle">
+                <h2>Edit Details</h2>
+            </div>
+            <div class="closePopup" @click="this.$parent.editForm = false">
+                <i class="fa-solid fa-xmark"></i>
+            </div>
         </div>
         <hr />
         <form class="carForm" @submit.prevent="editCarData">
@@ -62,14 +67,23 @@ export default {
     padding: 20px 30px;
 }
 
-hr {
-    border: 1px solid rgb(221, 221, 221);
+.formHeader {
+    display: flex;
+}
+
+.closePopup {
+    cursor: pointer;
 }
 
 .formTitle {
+    width: 100%;
     text-align: center;
-    margin: 0 0 25px;
+    margin-bottom: 0;
     color: #184b00;
+}
+
+hr {
+    border: 1px solid rgb(221, 221, 221);
 }
 
 .carForm {
@@ -124,6 +138,7 @@ textarea:focus {
     padding: 10px;
     margin: 10px auto;
     font-size: 16px;
+    cursor: pointer;
 }
 
 #submitForm:hover {

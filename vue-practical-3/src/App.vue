@@ -1,6 +1,6 @@
 <template>
   <NavBar />
-  <div id="homeComponent" :class="{ fadeBG: viewForm === true || editForm === true }" @click.prevent="hideForm">
+  <div id="homeComponent" :class="{ fadeBG: viewForm || editForm }" @click.prevent="hideForm">
     <div id="addCar">
       <button class="addCarBtn" @click.prevent.stop="showCarForm">Add Car</button>
     </div>
@@ -219,7 +219,7 @@ export default {
     hideForm() {
       this.viewForm = false;
       this.editForm = false;
-    }
+    },
   }
 }
 </script>
@@ -266,5 +266,6 @@ body {
 
 .fadeBG {
   filter: contrast(40%);
+  pointer-events: none;
 }
 </style>
