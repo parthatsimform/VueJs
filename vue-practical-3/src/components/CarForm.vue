@@ -12,13 +12,17 @@
         <hr />
         <form class="carForm" @submit.prevent="addCarData">
             <label for="carName">Car Name:</label>
-            <input type="text" id="carName" v-model="name" />
+            <input id="carName" v-model="name" @input="validateName" ref="nameInput" />
+            <div class="nameError"></div>
             <label for="carImage">Car Image:</label>
-            <input type="text" id="carImage" v-model="image" />
+            <input id="carImage" v-model="image" @input="validateImage" ref="imageInput" />
+            <div class="imageError"></div>
             <label for="carDesc">Description:</label>
-            <textarea id="carDesc" cols="30" rows="4" v-model="desc" />
+            <textarea id="carDesc" cols="30" rows="4" v-model="desc" @change="validateDesc" ref="descInput" />
+            <div class="descError"></div>
             <label for="carPrice">Car Price(₹):</label>
-            <input type="number" id="carPrice" v-model="price" />
+            <input id="carPrice" v-model="price" @input="validatePrice" ref="priceInput" />
+            <div class="priceError"></div>
             <button type="submit" id="submitForm">Submit</button>
         </form>
     </div>
@@ -38,22 +42,73 @@ export default {
         }
     },
     methods: {
-        addCarData() {
-            const car = {
-                id: this.id,
-                name: this.name,
-                image: this.image,
-                desc: this.desc,
-                price: this.price,
+        urlChacker() {
+            const urlPattern = /^((https?:)?\/\/)?[^\s]+\.(jpe?g|png|gif|bmp|webp)(\?\S*)?$/i;
+            return urlPattern.test(this.image);
+        },
+        showError(ref, errDiv, err) {
+            ref.focus();
+            ref.style.border = "1px solid red";
+            document.getElementsByClassName(errDiv)[0].innerHTML = err;
+        },
+        removeError(ref, errDiv) {
+            ref.style.border = "1px solid rgb(192, 192, 192)";
+            document.getElementsByClassName(errDiv)[0].innerHTML = "";
+        },
+        validateName() {
+            if (this.name === "") {
+                this.showError(this.$refs.nameInput, 'nameError', "*Car name is required")
+                return false;
+            } else {
+                this.removeError(this.$refs.nameInput, 'nameError');
+                return true;
             }
-            this.$emit("addCarData", car)
-            this.$parent.viewForm = false;
+        },
+        validateImage() {
+            if (!this.urlChacker()) {
+                this.showError(this.$refs.imageInput, 'imageError', "*Please enter a valid image URL");
+                return false;
+            } else {
+                this.removeError(this.$refs.imageInput, 'imageError');
+                return true;
+            }
+        },
+        validateDesc() {
+            if (this.desc === "" || this.desc.length < 30 || this.desc.length > 120) {
+                this.showError(this.$refs.descInput, 'descError', "*Car Description in limit of 30 to 120 characters is required");
+                return false;
+            } else {
+                this.removeError(this.$refs.descInput, 'descError');
+                return true;
+            }
+        },
+        validatePrice() {
+            if (this.price === "" || Number.isInteger(Number(this.price))) {
+                this.removeError(this.$refs.priceInput, 'priceError');
+                return true;
+            } else {
+                this.showError(this.$refs.priceInput, 'priceError', "*Car Price in integer is required");
+                return false;
+            }
+        },
+        addCarData() {
+            if (this.validateName() && this.validateImage() && this.validateDesc() && this.validatePrice()) {
+                const car = {
+                    id: this.id,
+                    name: this.name,
+                    image: this.image,
+                    desc: this.desc,
+                    price: this.price,
+                }
+                this.$emit("addCarData", car)
+                this.$parent.viewForm = false;
+            }
         },
     }
 }
 </script>
 
-<style>
+<style scoped>
 .addCarPopup {
     background-color: white;
     border: none;
@@ -122,10 +177,13 @@ input[type=number] {
     -moz-appearance: textfield;
 }
 
-input:focus,
-textarea:focus {
-    border: 2px solid rgb(166, 196, 55);
+.nameError,
+.imageError,
+.descError,
+.priceError {
+    color: red;
 }
+
 
 #submitForm {
     background-color: #e8ffdd;
@@ -143,5 +201,9 @@ textarea:focus {
 #submitForm:hover {
     background-color: green;
     color: #e8ffdd;
+}
+
+::placeholder {
+    color: red;
 }
 </style>
