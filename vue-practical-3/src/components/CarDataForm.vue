@@ -1,16 +1,19 @@
 <template>
-    <div class="addCarPopup">
+    <div class="carPopup">
         <div class="formHeader">
             <div class="formTitle">
-                <h2>Add Car</h2>
+                <h2>{{ title }}</h2>
             </div>
-            <div class="closePopup" @click="this.$parent.viewForm = false">
+            <!-- <div class="closePopup" @click="this.$parent.viewForm = false; this.$parent.editForm = false">
+                <i class="fa-solid fa-xmark"></i>
+            </div> -->
+            <div class="closePopup" @click="closePopup">
                 <i class="fa-solid fa-xmark"></i>
             </div>
         </div>
 
         <hr />
-        <form class="carForm" @submit.prevent="addCarData">
+        <form class="carForm" @submit.prevent="addOrEditCarData">
             <label for="carName">Car Name:</label>
             <input id="carName" v-model="name" @input="validateName" ref="nameInput" />
             <div class="nameError"></div>
@@ -30,15 +33,26 @@
 
 <script>
 export default {
-    name: "CarForm",
-    emits: ["addCarData"],
+    name: "CarDataForm",
+    props: ["car", "title"],
+    emits: ["addCarData", "editCarData"],
     data() {
-        return {
-            id: "",
-            name: "",
-            image: "",
-            desc: "",
-            price: "",
+        if (this.$parent.viewForm) {
+            return {
+                id: "",
+                name: "",
+                image: "",
+                desc: "",
+                price: "",
+            }
+        } else if (this.$parent.editForm) {
+            return {
+                id: this.car.id,
+                name: this.car.name,
+                image: this.car.image,
+                desc: this.car.desc,
+                price: this.car.price,
+            }
         }
     },
     methods: {
@@ -54,6 +68,11 @@ export default {
         removeError(ref, errDiv) {
             ref.style.border = "1px solid rgb(192, 192, 192)";
             document.getElementsByClassName(errDiv)[0].innerHTML = "";
+        },
+        closePopup() {
+            this.$parent.viewForm = false;
+            this.$parent.editForm = false;
+            this.$parent.togglePopup = false;
         },
         validateName() {
             if (this.name === "") {
@@ -91,7 +110,7 @@ export default {
                 return false;
             }
         },
-        addCarData() {
+        addOrEditCarData() {
             if (this.validateName() && this.validateImage() && this.validateDesc() && this.validatePrice()) {
                 const car = {
                     id: this.id,
@@ -100,8 +119,16 @@ export default {
                     desc: this.desc,
                     price: this.price,
                 }
-                this.$emit("addCarData", car)
-                this.$parent.viewForm = false;
+                this.$parent.togglePopup = false;
+                if (this.$parent.viewForm) {
+                    this.$emit("addCarData", car)
+                    this.$parent.viewForm = false;
+                }
+                if (this.$parent.editForm) {
+                    this.$emit("editCarData", car)
+                    this.$parent.editForm = false;
+                }
+
             }
         },
     }
@@ -109,7 +136,7 @@ export default {
 </script>
 
 <style scoped>
-.addCarPopup {
+.carPopup {
     background-color: white;
     border: none;
     border-radius: 10px;

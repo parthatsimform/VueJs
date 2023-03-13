@@ -1,6 +1,6 @@
 <template>
   <NavBar />
-  <div id="homeComponent" :class="{ fadeBG: viewForm || editForm }" @click.prevent="hideForm">
+  <div id="homeComponent" :class="{ fadeBG: togglePopup }" @click.prevent="hideForm">
     <div id="addCar">
       <button class="addCarBtn" @click.prevent.stop="showCarForm">Add Car</button>
     </div>
@@ -11,23 +11,23 @@
       </div>
     </div>
   </div>
-  <CarForm v-if="viewForm" @addCarData="newCarData" />
-  <EditForm v-if="editForm" :car="editableCar" @editCarData="changeCarData" />
+  <CarDataForm v-if="togglePopup" :title="title" @addCarData="newCarData" :car="editableCar"
+    @editCarData="changeCarData" />
 </template>
 
 <script>
 import GalleryCard from './components/GalleryCard.vue';
-import CarForm from './components/CarForm.vue';
-import EditForm from './components/EditForm.vue';
+import CarDataForm from './components/CarDataForm.vue';
 export default {
   name: "App",
   components: {
     GalleryCard,
-    CarForm,
-    EditForm
+    CarDataForm
   },
   data() {
     return {
+      togglePopup: false,
+      title: "",
       viewForm: false,
       editForm: false,
       editableCar: {},
@@ -121,7 +121,7 @@ export default {
           name: "Mahindra Scorpio N",
           image: "https://gumlet.assettype.com/evoindia%2F2022-06%2F5deb1717-fcf8-4b3d-a192-1788b8a0573e%2Fhero.jpg?auto=format%2Ccompress&fit=max&format=webp&w=1920&dpr=1.0",
           desc: "Midsize SUV known for its powerful performance, rugged design, and advanced features, making it ideal for off-road adventures.",
-          price: "₹1600000"
+          price: "1600000"
         },
         {
           id: 14,
@@ -181,6 +181,8 @@ export default {
     },
     showCarForm() {
       this.viewForm = true;
+      this.togglePopup = true;
+      this.title = "Add Car";
     },
     newCarData(newCar) {
       newCar.id = this.cars.length + 1;

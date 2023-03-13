@@ -54,6 +54,8 @@ export default {
             }
         },
         editCar(car) {
+            this.$parent.togglePopup = true;
+            this.$parent.title = "Edit Car";
             this.isEdit = true;
             this.editableCar = car;
             this.$emit("editableCar", this.editableCar);
@@ -68,7 +70,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .card {
     width: 300px;
     height: auto;
@@ -84,6 +86,12 @@ export default {
 
 .cardTitle {
     font-family: 'Roboto', sans-serif;
+    height: 75px;
+    display: flex;
+    justify-content: center;
+    overflow: hidden;
+    margin: 2px;
+    text-overflow: ellipsis;
 }
 
 .cardImg {
