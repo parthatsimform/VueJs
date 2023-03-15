@@ -20,7 +20,7 @@
             <label for="carImage">Car Image:</label>
             <input id="carImage" v-model="image" @input="validateImage" ref="imageInput" />
             <div class="imageError"></div>
-            <label for="cardetails">detailsription:</label>
+            <label for="cardetails">Details:</label>
             <textarea id="cardetails" cols="30" rows="4" v-model="details" @change="validatedetails" ref="detailsInput" />
             <div class="detailsError"></div>
             <label for="carPrice">Car Price(₹):</label>
@@ -93,7 +93,7 @@ export default {
         },
         validatedetails() {
             if (this.details === "" || this.details.length < 30 || this.details.length > 120) {
-                this.showError(this.$refs.detailsInput, 'detailsError', "*Car detailsription in limit of 30 to 120 characters is required");
+                this.showError(this.$refs.detailsInput, 'detailsError', "*Car detail in limit of 30 to 120 characters is required");
                 return false;
             } else {
                 this.removeError(this.$refs.detailsInput, 'detailsError');
