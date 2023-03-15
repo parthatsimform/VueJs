@@ -20,9 +20,9 @@
             <label for="carImage">Car Image:</label>
             <input id="carImage" v-model="image" @input="validateImage" ref="imageInput" />
             <div class="imageError"></div>
-            <label for="carDesc">Description:</label>
-            <textarea id="carDesc" cols="30" rows="4" v-model="desc" @change="validateDesc" ref="descInput" />
-            <div class="descError"></div>
+            <label for="cardetails">detailsription:</label>
+            <textarea id="cardetails" cols="30" rows="4" v-model="details" @change="validatedetails" ref="detailsInput" />
+            <div class="detailsError"></div>
             <label for="carPrice">Car Price(₹):</label>
             <input id="carPrice" v-model="price" @input="validatePrice" ref="priceInput" />
             <div class="priceError"></div>
@@ -39,10 +39,9 @@ export default {
     data() {
         if (this.$parent.viewForm) {
             return {
-                id: "",
                 name: "",
                 image: "",
-                desc: "",
+                details: "",
                 price: "",
             }
         } else if (this.$parent.editForm) {
@@ -50,7 +49,7 @@ export default {
                 id: this.car.id,
                 name: this.car.name,
                 image: this.car.image,
-                desc: this.car.desc,
+                details: this.car.details,
                 price: this.car.price,
             }
         }
@@ -92,12 +91,12 @@ export default {
                 return true;
             }
         },
-        validateDesc() {
-            if (this.desc === "" || this.desc.length < 30 || this.desc.length > 120) {
-                this.showError(this.$refs.descInput, 'descError', "*Car Description in limit of 30 to 120 characters is required");
+        validatedetails() {
+            if (this.details === "" || this.details.length < 30 || this.details.length > 120) {
+                this.showError(this.$refs.detailsInput, 'detailsError', "*Car detailsription in limit of 30 to 120 characters is required");
                 return false;
             } else {
-                this.removeError(this.$refs.descInput, 'descError');
+                this.removeError(this.$refs.detailsInput, 'detailsError');
                 return true;
             }
         },
@@ -111,12 +110,11 @@ export default {
             }
         },
         addOrEditCarData() {
-            if (this.validateName() && this.validateImage() && this.validateDesc() && this.validatePrice()) {
+            if (this.validateName() && this.validateImage() && this.validatedetails() && this.validatePrice()) {
                 const car = {
-                    id: this.id,
                     name: this.name,
                     image: this.image,
-                    desc: this.desc,
+                    details: this.details,
                     price: this.price,
                 }
                 this.$parent.togglePopup = false;
@@ -125,6 +123,7 @@ export default {
                     this.$parent.viewForm = false;
                 }
                 if (this.$parent.editForm) {
+                    car.id = this.id;
                     this.$emit("editCarData", car)
                     this.$parent.editForm = false;
                 }
@@ -206,7 +205,7 @@ input[type=number] {
 
 .nameError,
 .imageError,
-.descError,
+.detailsError,
 .priceError {
     color: red;
 }

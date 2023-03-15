@@ -12,8 +12,14 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+* {
+    background-color: white;
+}
+
 h1 {
+    margin: 0;
+    padding: 35px 0;
     text-align: center;
     font-size: xxx-large;
 }

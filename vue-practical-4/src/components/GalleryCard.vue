@@ -7,7 +7,7 @@
             <img :src="car.image" :alt="car.name" class="cardImg">
         </div>
         <div class="cardDsc">
-            <p>{{ car.desc }}</p>
+            <p>{{ car.details }}</p>
         </div>
         <div class="manipulateData">
             <div class="editBtnDiv">
@@ -42,7 +42,6 @@ export default {
     methods: {
         showPrice(name, price) {
             if (!this.$parent.viewForm && !this.$parent.editForm) {
-                console.log(this.isEdit);
                 this.$emit("alertPrice", name, price)
             }
         },

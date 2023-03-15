@@ -6,4 +6,3 @@ const app = createApp(App);
 
 app.component("NavBar", NavBar);
 app.mount("#app");
-console.log(NavBar);
