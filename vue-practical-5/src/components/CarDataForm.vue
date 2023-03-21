@@ -142,7 +142,7 @@ export default {
     position: fixed;
     width: 100%;
     max-width: 500px;
-    top: 25%;
+    top: 20%;
     left: 37%;
     padding: 20px 30px;
 }
@@ -191,6 +191,7 @@ textarea {
     height: 82px;
 }
 
+/* remove aerrow from number input field */
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {

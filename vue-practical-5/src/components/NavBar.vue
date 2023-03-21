@@ -1,8 +1,17 @@
 <template>
     <nav>
-        <h1>
-            <span>Car Gallery</span>
-        </h1>
+        <div class="navContent">
+            <h1>
+                <RouterLink :to="{ name: 'home' }" exact-active-class="no-active" class="navBarBrand"><span>Car
+                        Gallery</span>
+                </RouterLink>
+            </h1>
+            <div class="navBtns">
+                <RouterLink :to="{ name: 'home' }" class="navBtn">Home</RouterLink>
+                <RouterLink :to="{ name: 'login' }" class="navBtn">Login</RouterLink>
+                <RouterLink :to="{ name: 'register' }" class="navBtn">Register</RouterLink>
+            </div>
+        </div>
     </nav>
 </template>
 
@@ -13,15 +22,23 @@ export default {
 </script>
 
 <style scoped>
-* {
+nav {
     background-color: white;
+}
+
+.navContent {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 0 2%;
 }
 
 h1 {
     margin: 0;
-    padding: 35px 0;
-    text-align: center;
-    font-size: xxx-large;
+    padding: 10px 0;
+    font-size: 2.5rem;
 }
 
 h1 span {
@@ -31,5 +48,55 @@ h1 span {
 
 h1 span:hover {
     color: green;
+}
+
+.navBarBrand {
+    text-decoration: none;
+}
+
+.navBtns {
+    display: flex;
+    justify-content: space-between;
+}
+
+.navBtn {
+    text-decoration: none;
+    color: black;
+    padding: 5px 15px;
+    font-size: 1.2rem;
+}
+
+.activeBtn {
+    color: crimson;
+    border-bottom: 1px solid red;
+    font-weight: 600;
+}
+
+@media(max-width:666px) {
+    h1 {
+        font-size: 2rem;
+    }
+
+    .navBtn {
+        padding: 5px 5px;
+        font-size: 1rem;
+    }
+}
+
+@media(max-width:420px) {
+    h1 {
+        font-size: 1.5rem;
+    }
+}
+
+@media(max-width:365px) {
+    h1 {
+        font-size: 1.4rem;
+    }
+
+    .navBtn {
+        padding: 5px 5px;
+        font-size: 0.8rem;
+    }
 }
 </style>

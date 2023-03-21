@@ -20,10 +20,10 @@
             </div>
         </div>
         <div class="info">
-            <button class="priceBtn" @click.prevent="showPrice(car.name, car.price)" :disabled="!car.price"
+            <RouterLink :to="{ name: 'details', params: { id: `${car.id}` } }" class="infoBtn" :disabled="!car.price"
                 :class="{ notAvailable: !car.price }">
                 {{ checkForPrice(car.price) }}
-            </button>
+            </RouterLink>
         </div>
     </div>
 </template>
@@ -40,11 +40,6 @@ export default {
     props: ["car"],
     emits: ["alertPrice", "editableCar", "isEdit", "deleteCar"],
     methods: {
-        showPrice(name, price) {
-            if (!this.$parent.viewForm && !this.$parent.editForm) {
-                this.$emit("alertPrice", name, price)
-            }
-        },
         checkForPrice(price) {
             if (price) {
                 return "INFO";
@@ -94,7 +89,7 @@ export default {
 }
 
 .cardImg {
-    width: 300px;
+    width: 100%;
     height: 200px;
 }
 
@@ -112,20 +107,21 @@ export default {
     align-items: center;
 }
 
-.priceBtn {
+.infoBtn {
     border: 1px solid green;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
     padding: 7px 30px;
-    width: 100%;
+    width: 80%;
     background-color: green;
     color: rgb(255, 255, 255);
     font-size: 14px;
     font-weight: 900;
     cursor: pointer;
+    text-decoration: none;
 }
 
-.priceBtn:hover {
+.infoBtn:hover {
     color: #c7ffab;
     background-color: green;
 }
@@ -176,5 +172,34 @@ export default {
 .editBtn:hover,
 .deleteBtn:hover {
     filter: drop-shadow(0 0 0.1rem crimson);
+}
+
+@media(max-width:761px) {
+    .card {
+        width: 260px;
+    }
+
+    .cardImg {
+        height: 190px;
+    }
+
+    .info {
+        width: 95%;
+        margin: 0 auto;
+    }
+}
+
+@media(max-width:666px) {
+    .card {
+        width: 320px;
+    }
+
+    .cardImg {
+        height: 210px;
+    }
+
+    .info {
+        width: 100%;
+    }
 }
 </style>
