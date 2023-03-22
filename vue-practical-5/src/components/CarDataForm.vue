@@ -139,12 +139,14 @@ export default {
     background-color: white;
     border: none;
     border-radius: 10px;
-    position: fixed;
-    width: 100%;
+    width: 85%;
     max-width: 500px;
-    top: 20%;
-    left: 37%;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     padding: 20px 30px;
+    z-index: 2;
 }
 
 .formHeader {

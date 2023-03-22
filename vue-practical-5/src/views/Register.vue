@@ -293,4 +293,24 @@ input[type=number] {
     color: #e8ffdd;
     transition: all .3s ease;
 }
+
+@media(max-width: 460px) {
+    .register {
+        border: initial;
+        border-radius: initial;
+        width: 95%;
+        max-width: initial;
+        margin: 20px 0;
+        padding: 0 10px;
+    }
+
+    .login {
+        border: initial;
+        border-radius: initial;
+        width: 95%;
+        max-width: initial;
+        margin: 50% 0;
+        padding: 0 10px;
+    }
+}
 </style>

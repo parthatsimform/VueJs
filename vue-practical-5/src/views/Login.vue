@@ -62,18 +62,29 @@ export default {
         },
         async loginUser() {
             if (this.validateEmail() && this.validatePassword()) {
-                let allUsers;
-                try {
-                    const res = await Axios.get("https://testapi.io/api/dartya/resource/users");
-                    const data = await res.data.data;
-                    allUsers = data;
-                    let user = allUsers.find(u => u.email == this.email && u.password == this.password)
+                // let allUsers;
+                // try {
+                //     const res = await Axios.get("https://testapi.io/api/dartya/resource/users");
+                //     const data = await res.data.data;
+                //     allUsers = data;
+                //     let user = allUsers.find(u => u.email == this.email && u.password == this.password)
 
-                    if (user) {
-                        this.$router.push({ name: "home" })
-                    } else {
-                        alert("User not found")
-                    }
+                //     if (user) {
+                //         this.$router.push({ name: "home" })
+                //     } else {
+                //         alert("User not found")
+                //     }
+                // } catch (err) {
+                //     alert(err)
+                // }
+
+                let user = {
+                    email: this.email,
+                    password: this.password
+                }
+                try {
+                    const res = await Axios.post("https://testapi.io/api/dartya/resource/users", user);
+                    console.log(res);
                 } catch (err) {
                     alert(err)
                 }
@@ -128,7 +139,7 @@ input {
     margin: 5px 0 10px;
 }
 
-.nemailError,
+.emailError,
 .passwordError {
     color: red;
 }
@@ -152,7 +163,14 @@ input {
     transition: all .3s ease;
 }
 
-::placeholder {
-    color: red;
+@media(max-width: 460px) {
+    .login {
+        border: initial;
+        border-radius: initial;
+        width: 95%;
+        max-width: initial;
+        margin: 50% 0;
+        padding: 0 10px;
+    }
 }
 </style>

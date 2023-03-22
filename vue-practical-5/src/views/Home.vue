@@ -1,7 +1,9 @@
 <template>
+    <CarDataForm v-if="togglePopup" :title="title" @addCarData="newCarData" :car="editableCar"
+        @editCarData="changeCarData" />
     <div id="homeComponent" :class="{ fadeBG: togglePopup }" @click.prevent="hideForm">
         <div id="addCar">
-            <button class="addCarBtn" @click.prevent.stop="showCarForm">Add Car</button>
+            <button class="addCarBtn" @click.prevent.stop="showCarForm">+ Add Car</button>
         </div>
         <div id="carComponent">
             <div v-for="car in cars" :key="car.id">
@@ -10,8 +12,6 @@
             </div>
         </div>
     </div>
-    <CarDataForm v-if="togglePopup" :title="title" @addCarData="newCarData" :car="editableCar"
-        @editCarData="changeCarData" />
 </template>
 
 <script>
@@ -104,9 +104,15 @@ export default {
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Roboto:wght@500&display=swap');
 
-body {
-    margin: 0;
-    background-color: rgb(240, 240, 240);
+body::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-image: url("../assets/background.jpg");
+    background-size: 20%;
+    opacity: 0.2;
+    z-index: -1;
 }
 
 #homeComponent {
@@ -116,7 +122,9 @@ body {
 #addCar {
     display: flex;
     flex-direction: row-reverse;
-    margin: 0 1% 10px;
+    width: 100%;
+    max-width: 1600px;
+    margin: 0 auto 10px;
 }
 
 .addCarBtn {
@@ -147,6 +155,9 @@ body {
 }
 </style>
 
-    <!-- background: url("../assets/background.jpg");
-    background-size: contain;
-    background-blend-mode: lighten; -->
+<!-- body {
+    margin: 0;
+    background-color: rgb(240, 240, 240);
+    background: url("../assets/background.jpg");
+    background-size: 20%;
+} -->

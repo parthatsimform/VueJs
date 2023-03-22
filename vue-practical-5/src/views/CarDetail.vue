@@ -51,6 +51,12 @@ a {
 .backBtn {
     margin: 10px 9%;
     color: black;
+    display: inline-flex;
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 1px solid black;
+    background-color: white;
+
 }
 
 .carDetail {
