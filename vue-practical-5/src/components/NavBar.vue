@@ -33,6 +33,7 @@ nav {
     max-width: 1600px;
     margin: 0 auto;
     padding: 0 2%;
+    border-bottom: 1px solid green;
 }
 
 h1 {
@@ -64,12 +65,15 @@ h1 span:hover {
     color: black;
     padding: 5px 15px;
     font-size: 1.2rem;
+    background-size: 200%;
 }
 
 .activeBtn {
-    color: crimson;
-    border-bottom: 1px solid red;
+    border-radius: 5px;
+    background-color: rgb(0, 90, 90);
+    color: white;
     font-weight: 600;
+    transition: all 0.2s ease;
 }
 
 @media(max-width:666px) {
@@ -83,13 +87,13 @@ h1 span:hover {
     }
 }
 
-@media(max-width:420px) {
+@media(max-width:436px) {
     h1 {
         font-size: 1.5rem;
     }
 }
 
-@media(max-width:365px) {
+@media(max-width:383px) {
     h1 {
         font-size: 1.4rem;
     }

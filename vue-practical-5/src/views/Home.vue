@@ -1,7 +1,7 @@
 <template>
     <CarDataForm v-if="togglePopup" :title="title" @addCarData="newCarData" :car="editableCar"
         @editCarData="changeCarData" />
-    <div id="homeComponent" :class="{ fadeBG: togglePopup }" @click.prevent="hideForm">
+    <div id="homeComponent" :class="{ fadeBG: togglePopup }">
         <div id="addCar">
             <button class="addCarBtn" @click.prevent.stop="showCarForm">+ Add Car</button>
         </div>
@@ -93,10 +93,6 @@ export default {
                 alert(e);
             }
         },
-        hideForm() {
-            this.viewForm = false;
-            this.editForm = false;
-        },
     }
 }
 </script>
@@ -106,12 +102,14 @@ export default {
 
 body::before {
     content: "";
-    position: absolute;
+    position: fixed;
     width: 100%;
     height: 100%;
     background-image: url("../assets/background.jpg");
-    background-size: 20%;
-    opacity: 0.2;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    opacity: 0.1;
     z-index: -1;
 }
 

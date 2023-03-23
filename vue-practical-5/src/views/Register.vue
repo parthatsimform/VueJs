@@ -191,7 +191,7 @@ export default {
 <style scoped>
 .register {
     background-color: white;
-    border: none;
+    border: 1px solid rgb(0, 90, 90);
     border-radius: 10px;
     width: 100%;
     max-width: 500px;
@@ -301,15 +301,6 @@ input[type=number] {
         width: 95%;
         max-width: initial;
         margin: 20px 0;
-        padding: 0 10px;
-    }
-
-    .login {
-        border: initial;
-        border-radius: initial;
-        width: 95%;
-        max-width: initial;
-        margin: 50% 0;
         padding: 0 10px;
     }
 }

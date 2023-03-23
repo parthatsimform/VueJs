@@ -97,12 +97,12 @@ export default {
 <style scoped>
 .login {
     background-color: white;
-    border: none;
     border-radius: 10px;
     width: 100%;
     max-width: 400px;
     margin: 10% auto;
     padding: 20px 30px;
+    border: 1px solid rgb(0, 90, 90);
 }
 
 .formHeader {

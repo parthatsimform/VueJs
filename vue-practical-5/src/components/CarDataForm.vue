@@ -137,7 +137,7 @@ export default {
 <style scoped>
 .carPopup {
     background-color: white;
-    border: none;
+    border: 1px solid green;
     border-radius: 10px;
     width: 85%;
     max-width: 500px;
