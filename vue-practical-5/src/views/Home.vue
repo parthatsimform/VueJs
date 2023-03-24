@@ -141,7 +141,9 @@ body::before {
 }
 
 #carComponent {
-    display: flex;
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    gap: 1%;
     flex-wrap: wrap;
     justify-content: center;
     text-align: center;
@@ -151,11 +153,22 @@ body::before {
     filter: contrast(40%);
     pointer-events: none;
 }
-</style>
 
-<!-- body {
-    margin: 0;
-    background-color: rgb(240, 240, 240);
-    background: url("../assets/background.jpg");
-    background-size: 20%;
-} -->
+@media (max-width:1350px) {
+    #carComponent {
+        grid-template-columns: auto auto auto;
+    }
+}
+
+@media (max-width:1050px) {
+    #carComponent {
+        grid-template-columns: auto auto;
+    }
+}
+
+@media(max-width:570px) {
+    #carComponent {
+        grid-template-columns: auto;
+    }
+}
+</style>

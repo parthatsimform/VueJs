@@ -66,6 +66,11 @@ a {
     max-width: 1400px;
     margin: 20px auto;
     border-radius: 10px;
+    border: 1px solid rgb(221, 221, 221);
+}
+
+.carImg {
+    width: 50%;
 }
 
 .carImg img {
@@ -90,7 +95,8 @@ a {
 
 .carPrice p {
     display: inline-flex;
-    background-color: rgb(170, 255, 100);
+    background-color: rgb(0, 90, 90);
+    color: white;
     padding: 10px 15px;
     border-radius: 50px;
 }

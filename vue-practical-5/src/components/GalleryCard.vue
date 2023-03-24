@@ -1,7 +1,19 @@
 <template>
     <div class="card">
-        <div class="cardTitle">
-            <h2>{{ car.name }}</h2>
+        <div class="cardHeader">
+            <div class="editBtnDiv">
+                <button class="editBtn" @click.prevent.stop="editCar(car)" title="Edit"><i
+                        class="fa-solid fa-pen-to-square"></i>
+                </button>
+            </div>
+            <div class="cardTitle">
+                <h2>{{ car.name }}</h2>
+            </div>
+            <div class="deleteBtnDiv">
+                <button class="deleteBtn" @click.prevent.stop="deleteCar(car)" title="Delete"><i
+                        class="fa-solid fa-trash-can"></i>
+                </button>
+            </div>
         </div>
         <div class="cardImgDiv">
             <img :src="car.image" :alt="car.name" class="cardImg">
@@ -9,16 +21,7 @@
         <div class="cardDsc">
             <p>{{ car.details }}</p>
         </div>
-        <div class="manipulateData">
-            <div class="editBtnDiv">
-                <button class="editBtn" @click.prevent.stop="editCar(car)"><i class="fa-solid fa-pen-to-square"></i>
-                    Edit</button>
-            </div>
-            <div class="deleteBtnDiv">
-                <button class="deleteBtn" @click.prevent.stop="deleteCar(car)"><i class="fa-solid fa-trash-can"></i>
-                    Delete</button>
-            </div>
-        </div>
+
         <div class="info">
             <RouterLink :to="{ name: 'details', params: { id: `${car.id}` } }" class="infoBtn" :disabled="!car.price"
                 :class="{ notAvailable: !car.price }">
@@ -68,14 +71,22 @@ export default {
 .card {
     width: 300px;
     height: auto;
-    margin: 0 10px 10px;
     border-radius: 10px;
     background-color: #fff;
+    overflow: hidden;
+    border: 1px solid rgb(221, 221, 221);
 }
 
 .card:hover {
     background-color: #e8ffdd;
     box-shadow: 0px 0px 30px 0px rgba(0, 0, 0, 0.1);
+    border: 1px solid green;
+}
+
+.cardHeader {
+    display: flex;
+    margin: 0 0 10px;
+    justify-content: space-between;
 }
 
 .cardTitle {
@@ -137,42 +148,44 @@ export default {
     background-color: #ebffd8;
 }
 
-.manipulateData {
-    display: flex;
-    margin: 0 0 10px;
-    justify-content: space-between;
-}
-
-.editBtnDiv,
-.deleteBtnDiv {
-    width: 50%;
-}
-
 .editBtn,
 .deleteBtn {
-    width: 90%;
-    padding-top: 5px;
-    padding-bottom: 5px;
+    padding: 10px;
     border: none;
-    border-radius: 5px;
     color: white;
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
+    display: none;
+}
+
+.editBtn:hover,
+.deleteBtn:hover {
+    transform: scale(130%);
+    transition: all 0.3s ease;
 }
 
 .editBtn {
+    border-bottom-right-radius: 10px;
     background-color: orange;
 }
 
 .deleteBtn {
     background-color: red;
+    border-bottom-left-radius: 10px;
+}
+
+.card:hover .editBtn,
+.card:hover .deleteBtn {
+    display: block;
 }
 
 .editBtn:hover,
 .deleteBtn:hover {
     filter: drop-shadow(0 0 0.1rem crimson);
 }
+
+
 
 @media(max-width:761px) {
     .card {
@@ -190,12 +203,18 @@ export default {
 }
 
 @media(max-width:666px) {
-    .card {
-        width: 320px;
-    }
-
     .cardImg {
         height: 210px;
+    }
+
+    .info {
+        width: 100%;
+    }
+}
+
+@media(max-width:570px) {
+    .card {
+        width: 300px;
     }
 
     .info {
