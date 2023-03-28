@@ -1,11 +1,13 @@
 <template>
     <div class="card">
         <div class="cardHeader">
-            <div class="editBtnDiv">
-                <button class="editBtn" @click.prevent.stop="editCar(car)" title="Edit"><i
-                        class="fa-solid fa-pen-to-square"></i>
-                </button>
-            </div>
+            <Transition name="edit">
+                <div class="editBtnDiv">
+                    <button class="editBtn" @click.prevent.stop="editCar(car)" title="Edit"><i
+                            class="fa-solid fa-pen-to-square"></i>
+                    </button>
+                </div>
+            </Transition>
             <div class="cardTitle">
                 <h2>{{ car.name }}</h2>
             </div>

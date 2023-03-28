@@ -1,13 +1,20 @@
 <template>
-    <CarDataForm v-if="togglePopup" :title="title" :car="editableCar" @addCarData="newCarData" @editCarData="changeCarData"
-        @closeForm="closeForm" />
-    <div id="homeComponent" :class="{ fadeBG: togglePopup }">
-        <div id="addCar">
-            <button class="addCarBtn" @click.prevent.stop="showCarForm">+ Add Car</button>
-        </div>
-        <div id="carComponent">
-            <div v-for="car in cars" :key="car.id">
-                <GalleryCard :car="car" @alertPrice="displayPrice" @carEditForm="editFormOpen" @deleteCar="removeCar" />
+    <div>
+        <Transition name="form" mode="out-in">
+            <CarDataForm v-if="togglePopup" :title="title" :car="editableCar" @addCarData="newCarData"
+                @editCarData="changeCarData" @closeForm="closeForm" />
+        </Transition>
+        <div id="homeComponent" :class="{ fadeBG: togglePopup }">
+            <div id="addCar">
+                <button class="addCarBtn" @click.prevent.stop="showCarForm">+ Add Car</button>
+            </div>
+            <div id="carComponent">
+                <TransitionGroup name="carCard" appear>
+                    <div v-for="car in cars" :key="car.id">
+                        <GalleryCard :car="car" @alertPrice="displayPrice" @carEditForm="editFormOpen"
+                            @deleteCar="removeCar" />
+                    </div>
+                </TransitionGroup>
             </div>
         </div>
     </div>
@@ -117,6 +124,42 @@ body::before {
     background-position: center center;
     opacity: 0.1;
     z-index: -1;
+}
+
+/* Car Form transition */
+.form-enter-from,
+.form-leave-to {
+    opacity: 0;
+    transform: scale(0.2);
+}
+
+.form-enter-active,
+.form-leave-active {
+    transition: all 0.5s ease;
+}
+
+.form-leave-active {
+    position: absolute;
+}
+
+/* Car Card Transition */
+.carCard-enter-from,
+.carCard-leave-to {
+    opacity: 0;
+    transform: translateX(-200px) scale(0.2);
+}
+
+.carCard-enter-active,
+.carCard-leave-active {
+    transition: all 0.6s ease-in;
+}
+
+.carCard-leave-active {
+    position: absolute;
+}
+
+.carCard-move {
+    transition: all 0.3s ease;
 }
 
 #homeComponent {

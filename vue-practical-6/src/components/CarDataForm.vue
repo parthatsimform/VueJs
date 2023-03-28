@@ -1,30 +1,33 @@
 <template>
     <div class="carPopup">
-        <div class="formHeader">
-            <div class="formTitle">
-                <h2>{{ title }}</h2>
+        <div class="carData">
+            <div class="formHeader">
+                <div class="formTitle">
+                    <h2>{{ title }}</h2>
+                </div>
+                <div class="closePopup" @click="closePopup">
+                    <i class="fa-solid fa-xmark"></i>
+                </div>
             </div>
-            <div class="closePopup" @click="closePopup">
-                <i class="fa-solid fa-xmark"></i>
-            </div>
-        </div>
 
-        <hr />
-        <form class="carForm" @submit.prevent="addOrEditCarData">
-            <label for="carName">Car Name:</label>
-            <input id="carName" v-model="name" @input="validateName" ref="nameInput" />
-            <div class="nameError"></div>
-            <label for="carImage">Car Image:</label>
-            <input id="carImage" v-model="image" @input="validateImage" ref="imageInput" />
-            <div class="imageError"></div>
-            <label for="cardetails">Details:</label>
-            <textarea id="cardetails" cols="30" rows="4" v-model="details" @change="validatedetails" ref="detailsInput" />
-            <div class="detailsError"></div>
-            <label for="carPrice">Car Price(₹):</label>
-            <input id="carPrice" v-model="price" @input="validatePrice" ref="priceInput" />
-            <div class="priceError"></div>
-            <button type="submit" id="submitForm">Submit</button>
-        </form>
+            <hr />
+            <form class="carForm" @submit.prevent="addOrEditCarData">
+                <label for="carName">Car Name:</label>
+                <input id="carName" v-model="name" @input="validateName" ref="nameInput" />
+                <div class="nameError"></div>
+                <label for="carImage">Car Image:</label>
+                <input id="carImage" v-model="image" @input="validateImage" ref="imageInput" />
+                <div class="imageError"></div>
+                <label for="cardetails">Details:</label>
+                <textarea id="cardetails" cols="30" rows="4" v-model="details" @change="validatedetails"
+                    ref="detailsInput" />
+                <div class="detailsError"></div>
+                <label for="carPrice">Car Price(₹):</label>
+                <input id="carPrice" v-model="price" @input="validatePrice" ref="priceInput" />
+                <div class="priceError"></div>
+                <button type="submit" id="submitForm">Submit</button>
+            </form>
+        </div>
     </div>
 </template>
 
@@ -128,17 +131,25 @@ export default {
 
 <style scoped>
 .carPopup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+}
+
+.carData {
     background-color: white;
     border: 1px solid green;
     border-radius: 10px;
     width: 85%;
     max-width: 500px;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    height: 600px;
     padding: 20px 30px;
-    z-index: 2;
 }
 
 .formHeader {

@@ -1,20 +1,22 @@
 <template>
-    <div class="backBtn">
-        <RouterLink :to="{ name: 'home' }"><i class="fa-solid fa-caret-left"></i> Back</RouterLink>
-    </div>
-    <div class="carDetail">
-        <div class="carImg">
-            <img :src="car.image" :alt="car.name" />
+    <div>
+        <div class="backBtn">
+            <RouterLink :to="{ name: 'home' }"><i class="fa-solid fa-caret-left"></i> Back</RouterLink>
         </div>
-        <div class="carInfo">
-            <div class="carName">
-                <h2>{{ car.name }}</h2>
+        <div class="carDetail">
+            <div class="carImg">
+                <img :src="car.image" :alt="car.name" />
             </div>
-            <div class="carDesc">
-                <p>{{ car.details }}</p>
-            </div>
-            <div class="carPrice">
-                <p>Price:&nbsp;<span>₹{{ car.price }}</span></p>
+            <div class="carInfo">
+                <div class="carName">
+                    <h2>{{ car.name }}</h2>
+                </div>
+                <div class="carDesc">
+                    <p>{{ car.details }}</p>
+                </div>
+                <div class="carPrice">
+                    <p>Price:&nbsp;<span>₹{{ car.price }}</span></p>
+                </div>
             </div>
         </div>
     </div>
