@@ -103,4 +103,15 @@ h1 span:hover {
         font-size: 0.8rem;
     }
 }
+
+@media(max-width:334px) {
+    h1 {
+        font-size: 1.2rem;
+    }
+
+    .navBtn {
+        padding: 2px 2px;
+        font-size: 0.7rem;
+    }
+}
 </style>
