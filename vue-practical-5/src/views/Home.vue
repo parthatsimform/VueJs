@@ -68,7 +68,7 @@ export default {
             this.editableCar = car;
         },
         changeCarData(car) {
-            this.cars.filter(async (c) => {
+            this.cars.forEach(async (c) => {
                 if (c.id === car.id) {
                     try {
                         const res = await Axios.put(`https://testapi.io/api/dartya/resource/cardata/${c.id}`, car);
