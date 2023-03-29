@@ -32,11 +32,15 @@
 </template>
 
 <script>
+import { mapWritableState, mapState, mapActions } from 'pinia';
+import { useCarStore } from '../stores/car';
 export default {
     name: "CarDataForm",
-    props: ["car", "title"],
-    emits: ["addCarData", "editCarData", "closeForm"],
+    computed: {
+        ...mapWritableState(useCarStore, ['car', 'title']),
+    },
     data() {
+        console.log(this.title);
         if (this.title == "Edit Car") {
             return {
                 id: this.car.id,
@@ -46,6 +50,7 @@ export default {
                 price: this.car.price,
             }
         } else {
+
             return {
                 name: "",
                 image: "",
@@ -55,6 +60,7 @@ export default {
         }
     },
     methods: {
+        ...mapActions(useCarStore, ['newCarData', 'changeCarData', 'closeForm']),
         urlChacker() {
             const urlPattern = /^((https?:)?\/\/)?[^\s]+\.(jpe?g|png|gif|bmp|webp)(\?\S*)?$/i;
             return urlPattern.test(this.image);
@@ -69,7 +75,7 @@ export default {
             document.getElementsByClassName(errDiv)[0].innerHTML = "";
         },
         closePopup() {
-            this.$emit("closeForm");
+            this.closeForm();
         },
         validateName() {
             if (this.name === "") {
@@ -116,13 +122,14 @@ export default {
                     price: this.price,
                 }
                 if (this.title == "Add Car") {
-                    this.$emit("addCarData", car)
+                    this.newCarData();
+                    // this.$emit("addCarData", car)
                 }
                 if (this.title == "Edit Car") {
                     car.id = this.id;
-                    this.$emit("editCarData", car)
+                    this.changeCarData(car);
+                    // this.$emit("editCarData", car)
                 }
-
             }
         },
     }

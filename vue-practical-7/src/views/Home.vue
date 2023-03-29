@@ -1,8 +1,7 @@
 <template>
     <div>
         <Transition name="form" mode="out-in">
-            <CarDataForm v-if="togglePopup" :title="title" :car="editableCar" @addCarData="newCarData"
-                @editCarData="changeCarData" @closeForm="closeForm" />
+            <CarDataForm v-if="togglePopup" />
         </Transition>
         <div id="homeComponent" :class="{ fadeBG: togglePopup }">
             <div id="addCar">
@@ -11,8 +10,7 @@
             <div id="carComponent">
                 <TransitionGroup name="carCard" appear>
                     <div v-for="car in cars" :key="car.id">
-                        <GalleryCard :car="car" @alertPrice="displayPrice" @carEditForm="editFormOpen"
-                            @deleteCar="removeCar" />
+                        <GalleryCard :car="car" />
                     </div>
                 </TransitionGroup>
             </div>
@@ -23,89 +21,25 @@
 <script>
 import GalleryCard from '../components/GalleryCard.vue';
 import CarDataForm from '../components/CarDataForm.vue';
-import Axios from 'axios';
+import { mapWritableState, mapActions } from 'pinia';
+import { useCarStore } from '../stores/car'
+
 export default {
     name: "Home",
     components: {
         GalleryCard,
         CarDataForm
     },
-    data() {
-        return {
-            togglePopup: false,
-            title: "",
-            viewForm: false,
-            editForm: false,
-            editableCar: {},
-            cars: [],
-        }
+
+    computed: {
+        ...mapWritableState(useCarStore, ['togglePopup', 'title', 'viewForm', 'editForm', 'editableCar', 'cars', 'car',]),
+
+    },
+    methods: {
+        ...mapActions(useCarStore, ['getCars', 'getCar', 'changeCarData', 'newCarData', 'closeForm', 'editFormOpen', 'removeCar', 'showCarForm'])
     },
     created() {
         this.getCars();
-    },
-    methods: {
-        async getCars() {
-            const res = await Axios.get("https://testapi.io/api/dartya/resource/cardata");
-            const data = await res.data.data;
-            this.cars = data;
-        },
-        displayPrice(name, price) {
-            alert(name + "'s Price is: " + price);
-        },
-        closeForm() {
-            this.viewForm = false;
-            this.editForm = false;
-            this.togglePopup = false;
-        },
-        editFormOpen(car) {
-            this.editForm = true;
-            this.togglePopup = true;
-            this.title = "Edit Car";
-            this.editableCar = car;
-        },
-        showCarForm() {
-            this.viewForm = true;
-            this.togglePopup = true;
-            this.title = "Add Car";
-        },
-        async newCarData(newCar) {
-            try {
-                const res = await Axios.post("https://testapi.io/api/dartya/resource/cardata", newCar);
-                if (res.status === 201) {
-                    this.getCars();
-                }
-            } catch (e) {
-                alert(e);
-            }
-            this.closeForm();
-        },
-        changeCarData(car) {
-            this.cars.forEach(async (c) => {
-                if (c.id === car.id) {
-                    try {
-                        const res = await Axios.put(`https://testapi.io/api/dartya/resource/cardata/${c.id}`, car);
-                        if (res.status === 200) {
-                            this.getCars();
-                        }
-                    } catch (e) {
-                        alert(e);
-                    }
-                }
-            })
-            this.closeForm();
-        },
-        async removeCar(car) {
-            try {
-                if (confirm("Are you sure you want to delete " + car.name + "?")) {
-                    const res = await Axios.delete(`https://testapi.io/api/dartya/resource/cardata/${car.id}`);
-                    if (res.status === 204) {
-                        this.getCars();
-                    }
-                }
-            } catch (e) {
-                alert(e);
-            }
-        },
     }
 }
 </script>
