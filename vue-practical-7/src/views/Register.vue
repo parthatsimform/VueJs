@@ -8,19 +8,20 @@
         <hr />
         <form class="registerForm" @submit.prevent="registerUser">
             <label for="name">Name:</label>
-            <input type="text" id="name" v-model="name" @input="validateName" ref="nameInput">
+            <input type="text" id="name" v-model="user.name" @input="validateName" ref="nameInput">
             <div class="nameError"></div>
             <label for="email">Email:</label>
-            <input type="text" id="email" v-model="email" @input="validateEmail" ref="emailInput" />
+            <input type="text" id="email" v-model="user.email" @input="validateEmail" ref="emailInput" />
             <div class="emailError"></div>
             <label for="password">Password:</label>
-            <input type="password" id="password" v-model="password" @input="validatePassword" ref="passwordInput" />
+            <input type="password" id="password" v-model="user.password" @input="validatePassword" ref="passwordInput" />
             <div class="passwordError"></div>
             <label for="cPassword">Confirm Password:</label>
-            <input type="password" id="cPassword" v-model="cPassword" @input="validateCPassword" ref="cPasswordInput" />
+            <input type="password" id="cPassword" v-model="user.cPassword" @input="validateCPassword"
+                ref="cPasswordInput" />
             <div class="cPasswordError"></div>
             <label for="role">Role:</label>
-            <select name="role" id="role" v-model="role" @change="validateRole" ref="roleInput">
+            <select name="role" id="role" v-model="user.role" @change="validateRole" ref="roleInput">
                 <option value="" selected disabled>Select Role</option>
                 <option value="admin">Admin</option>
                 <option value="employee">Employee</option>
@@ -30,22 +31,22 @@
             <div class="genderSelect">
                 <label for="gender">Gender:</label>
                 <span class="maleRadio">
-                    <input type="radio" id="male" value="Male" v-model="gender" @change="validateGender"
+                    <input type="radio" id="male" value="Male" v-model="user.gender" @change="validateGender"
                         ref="genderInput" />
                     <label for="male">Male</label>
                 </span>
                 <span class="femaleRadio">
-                    <input type="radio" id="female" value="Female" v-model="gender" @change="validateGender"
+                    <input type="radio" id="female" value="Female" v-model="user.gender" @change="validateGender"
                         ref="genderInput" />
                     <label for="female">Female</label>
                 </span>
                 <div class="genderError"></div>
             </div>
             <label for="age">Age:</label>
-            <input id="age" v-model="age" @input="validateAge" ref="ageInput" />
+            <input id="age" v-model="user.age" @input="validateAge" ref="ageInput" />
             <div class="ageError"></div>
             <label for="dob">DOB:</label>
-            <input type="date" id="dob" v-model="dob" @change="validateDOB" ref="dobInput" />
+            <input type="date" id="dob" v-model="user.dob" @change="validateDOB" ref="dobInput" />
             <div class="dobError"></div>
             <button type="submit" class="submitForm">Register</button>
         </form>
@@ -53,23 +54,16 @@
 </template>
 
 <script>
-import Axios from 'axios';
+import { mapActions, mapWritableState } from 'pinia';
+import { useUserStore } from '../stores/user'
 
 export default {
     name: "Register",
-    data() {
-        return {
-            name: "",
-            email: "",
-            password: "",
-            cPassword: "",
-            role: "",
-            gender: "",
-            age: "",
-            dob: "",
-        }
+    computed: {
+        ...mapWritableState(useUserStore, ['user'])
     },
     methods: {
+        ...mapActions(useUserStore, ['signupUser']),
         showError(ref, errDiv, err) {
             ref.focus();
             ref.style.border = "1px solid red";
@@ -80,7 +74,7 @@ export default {
             document.getElementsByClassName(errDiv)[0].innerHTML = "";
         },
         validateName() {
-            if (this.name === "") {
+            if (this.user.name === "") {
                 this.showError(this.$refs.nameInput, 'nameError', "*User name is required")
                 return false;
             } else {
@@ -90,7 +84,7 @@ export default {
         },
         validateEmail() {
             const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g
-            if (emailRegex.test(this.email)) {
+            if (emailRegex.test(this.user.email)) {
                 this.removeError(this.$refs.emailInput, 'emailError');
                 return true;
             } else {
@@ -100,17 +94,16 @@ export default {
         },
         validatePassword() {
             const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,12}$/
-            if (passwordRegex.test(this.password)) {
+            if (passwordRegex.test(this.user.password)) {
                 this.removeError(this.$refs.passwordInput, 'passwordError');
                 return true;
-
             } else {
                 this.showError(this.$refs.passwordInput, 'passwordError', "*Password of length 8-12 is required and must contain at least one numeric digit and a special character")
                 return false;
             }
         },
         validateCPassword() {
-            if (this.cPassword !== this.password) {
+            if (this.user.cPassword !== this.user.password) {
                 this.showError(this.$refs.cPasswordInput, 'cPasswordError', "*Confirm password doesn't match with password")
                 return false;
             } else {
@@ -119,7 +112,7 @@ export default {
             }
         },
         validateRole() {
-            if (this.role === "") {
+            if (this.user.role === "") {
                 this.showError(this.$refs.roleInput, 'roleError', "*Please select a role")
                 return false;
             } else {
@@ -128,7 +121,7 @@ export default {
             }
         },
         validateGender() {
-            if (this.gender === "") {
+            if (this.user.gender === "") {
                 this.showError(this.$refs.genderInput, 'genderError', "*Please select a gender")
                 return false;
             } else {
@@ -137,7 +130,7 @@ export default {
             }
         },
         validateAge() {
-            if (this.age !== "" && Number.isInteger(Number(this.age))) {
+            if (this.user.age !== "" && Number.isInteger(Number(this.user.age))) {
                 this.removeError(this.$refs.ageInput, 'ageError');
                 return true;
             } else {
@@ -146,7 +139,7 @@ export default {
             }
         },
         validateDOB() {
-            if (this.dob === "") {
+            if (this.user.dob === "") {
                 this.showError(this.$refs.dobInput, 'dobError', "*Please select your DOB")
                 return false;
             } else {
@@ -161,27 +154,18 @@ export default {
                 return false;
             }
         },
-        async registerUser() {
+        registerUser() {
             if (this.validateForm()) {
-                // console.log("validated");
                 const newUser = {
-                    name: this.name,
-                    email: this.email,
-                    password: this.password,
-                    role: this.role,
-                    gender: this.gender,
-                    age: this.age,
-                    dob: this.dob
+                    name: this.user.name,
+                    email: this.user.email,
+                    password: this.user.password,
+                    role: this.user.role,
+                    gender: this.user.gender,
+                    age: this.user.age,
+                    dob: this.user.dob
                 }
-                try {
-                    const res = await Axios.post("https://testapi.io/api/dartya/resource/users", newUser);
-                    if (res.status === 201) {
-                        console.log("Yesss");
-                        this.$router.push({ name: "home" })
-                    }
-                } catch (err) {
-                    alert(err)
-                }
+                this.signupUser(newUser);
             }
         },
     },

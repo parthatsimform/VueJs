@@ -23,23 +23,19 @@
 </template>
 
 <script>
-import Axios from 'axios';
+import { mapActions, mapState } from 'pinia';
+import { useCarStore } from '../stores/car';
 
 export default {
     name: "CarDetail",
-    data() {
-        return {
-            car: {}
-        }
+    computed: {
+        ...mapState(useCarStore, ['car'])
     },
-    async created() {
-        try {
-            const res = await Axios.get(`https://testapi.io/api/dartya/resource/cardata/${this.$route.params.id}`)
-            const data = await res.data;
-            this.car = data;
-        } catch (err) {
-            alert(err)
-        }
+    methods: {
+        ...mapActions(useCarStore, ['getCar'])
+    },
+    created() {
+        this.getCar(this.$route.params.id)
     }
 }
 </script>

@@ -21,7 +21,7 @@
 <script>
 import GalleryCard from '../components/GalleryCard.vue';
 import CarDataForm from '../components/CarDataForm.vue';
-import { mapWritableState, mapActions } from 'pinia';
+import { mapState, mapActions } from 'pinia';
 import { useCarStore } from '../stores/car'
 
 export default {
@@ -32,11 +32,11 @@ export default {
     },
 
     computed: {
-        ...mapWritableState(useCarStore, ['togglePopup', 'title', 'viewForm', 'editForm', 'editableCar', 'cars', 'car',]),
+        ...mapState(useCarStore, ['cars', 'togglePopup']),
 
     },
     methods: {
-        ...mapActions(useCarStore, ['getCars', 'getCar', 'changeCarData', 'newCarData', 'closeForm', 'editFormOpen', 'removeCar', 'showCarForm'])
+        ...mapActions(useCarStore, ['getCars', 'showCarForm']),
     },
     created() {
         this.getCars();

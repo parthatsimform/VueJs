@@ -3,7 +3,7 @@
         <div class="cardHeader">
             <Transition name="edit">
                 <div class="editBtnDiv">
-                    <button class="editBtn" @click.prevent.stop="editCar(car)" title="Edit"><i
+                    <button class="editBtn" @click.prevent.stop="editFormOpen(car)" title="Edit"><i
                             class="fa-solid fa-pen-to-square"></i>
                     </button>
                 </div>
@@ -12,7 +12,7 @@
                 <h2>{{ car.name }}</h2>
             </div>
             <div class="deleteBtnDiv">
-                <button class="deleteBtn" @click.prevent.stop="deleteCar(car)" title="Delete"><i
+                <button class="deleteBtn" @click.prevent.stop="removeCar(car)" title="Delete"><i
                         class="fa-solid fa-trash-can"></i>
                 </button>
             </div>
@@ -27,31 +27,28 @@
         <div class="info">
             <RouterLink :to="{ name: 'details', params: { id: `${car.id}` } }" class="infoBtn" :disabled="!car.price"
                 :class="{ notAvailable: !car.price }">
-                {{ checkForPrice(car.price) }}
+                <!-- {{ checkForPrice(car.price) }} -->
+                INFO
             </RouterLink>
         </div>
     </div>
 </template>
 
 <script>
+import { useCarStore } from '../stores/car';
+import { mapActions } from 'pinia';
 export default {
     name: "GalleryCard",
     props: ["car"],
-    emits: ["deleteCar", "carEditForm"],
     methods: {
-        checkForPrice(price) {
-            if (price) {
-                return "INFO";
-            } else {
-                return "Available Soon!";
-            }
-        },
-        editCar(car) {
-            this.$emit("carEditForm", car);
-        },
-        deleteCar(car) {
-            this.$emit("deleteCar", car);
-        }
+        ...mapActions(useCarStore, ["editFormOpen", 'removeCar']),
+        // checkForPrice(price) {
+        //     if (price) {
+        //         return "INFO";
+        //     } else {
+        //         return "Available Soon!";
+        //     }
+        // },
     },
 }
 </script>

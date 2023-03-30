@@ -13,17 +13,17 @@
             <hr />
             <form class="carForm" @submit.prevent="addOrEditCarData">
                 <label for="carName">Car Name:</label>
-                <input id="carName" v-model="name" @input="validateName" ref="nameInput" />
+                <input id="carName" v-model="formData.name" @input="validateName" ref="nameInput" />
                 <div class="nameError"></div>
                 <label for="carImage">Car Image:</label>
-                <input id="carImage" v-model="image" @input="validateImage" ref="imageInput" />
+                <input id="carImage" v-model="formData.image" @input="validateImage" ref="imageInput" />
                 <div class="imageError"></div>
                 <label for="cardetails">Details:</label>
-                <textarea id="cardetails" cols="30" rows="4" v-model="details" @change="validatedetails"
+                <textarea id="cardetails" cols="30" rows="4" v-model="formData.details" @change="validatedetails"
                     ref="detailsInput" />
                 <div class="detailsError"></div>
                 <label for="carPrice">Car Price(₹):</label>
-                <input id="carPrice" v-model="price" @input="validatePrice" ref="priceInput" />
+                <input id="carPrice" v-model="formData.price" @input="validatePrice" ref="priceInput" />
                 <div class="priceError"></div>
                 <button type="submit" id="submitForm">Submit</button>
             </form>
@@ -32,38 +32,37 @@
 </template>
 
 <script>
-import { mapWritableState, mapState, mapActions } from 'pinia';
-import { useCarStore } from '../stores/car';
+import { mapState, mapWritableState, mapActions } from 'pinia';
+import { useCarStore } from '../stores/car'
 export default {
     name: "CarDataForm",
     computed: {
-        ...mapWritableState(useCarStore, ['car', 'title']),
-    },
-    data() {
-        console.log(this.title);
-        if (this.title == "Edit Car") {
-            return {
-                id: this.car.id,
-                name: this.car.name,
-                image: this.car.image,
-                details: this.car.details,
-                price: this.car.price,
+        ...mapState(useCarStore, ['title']),
+        ...mapWritableState(useCarStore, ['editableCar', 'togglePopup']),
+        formData() {
+            if (this.title == "Edit Car") {
+                return {
+                    id: this.editableCar.id,
+                    name: this.editableCar.name,
+                    image: this.editableCar.image,
+                    details: this.editableCar.details,
+                    price: this.editableCar.price,
+                }
+            } else {
+                return {
+                    name: "",
+                    image: "",
+                    details: "",
+                    price: "",
+                }
             }
-        } else {
-
-            return {
-                name: "",
-                image: "",
-                details: "",
-                price: "",
-            }
-        }
+        },
     },
     methods: {
-        ...mapActions(useCarStore, ['newCarData', 'changeCarData', 'closeForm']),
+        ...mapActions(useCarStore, ['newCarData', 'changeCarData']),
         urlChacker() {
             const urlPattern = /^((https?:)?\/\/)?[^\s]+\.(jpe?g|png|gif|bmp|webp)(\?\S*)?$/i;
-            return urlPattern.test(this.image);
+            return urlPattern.test(this.formData.image);
         },
         showError(ref, errDiv, err) {
             ref.focus();
@@ -75,10 +74,10 @@ export default {
             document.getElementsByClassName(errDiv)[0].innerHTML = "";
         },
         closePopup() {
-            this.closeForm();
+            this.togglePopup = false;
         },
         validateName() {
-            if (this.name === "") {
+            if (this.formData.name === "") {
                 this.showError(this.$refs.nameInput, 'nameError', "*Car name is required")
                 return false;
             } else {
@@ -96,7 +95,7 @@ export default {
             }
         },
         validatedetails() {
-            if (this.details === "" || this.details.length < 30 || this.details.length > 120) {
+            if (this.formData.details === "" || this.formData.details.length < 30 || this.formData.details.length > 120) {
                 this.showError(this.$refs.detailsInput, 'detailsError', "*Car detail in limit of 30 to 120 characters is required");
                 return false;
             } else {
@@ -105,7 +104,7 @@ export default {
             }
         },
         validatePrice() {
-            if (this.price === "" || Number.isInteger(Number(this.price))) {
+            if (this.formData.price !== "" && Number.isInteger(Number(this.formData.price))) {
                 this.removeError(this.$refs.priceInput, 'priceError');
                 return true;
             } else {
@@ -116,19 +115,17 @@ export default {
         addOrEditCarData() {
             if (this.validateName() && this.validateImage() && this.validatedetails() && this.validatePrice()) {
                 const car = {
-                    name: this.name,
-                    image: this.image,
-                    details: this.details,
-                    price: this.price,
+                    name: this.formData.name,
+                    image: this.formData.image,
+                    details: this.formData.details,
+                    price: this.formData.price,
                 }
                 if (this.title == "Add Car") {
-                    this.newCarData();
-                    // this.$emit("addCarData", car)
+                    this.newCarData(car);
                 }
                 if (this.title == "Edit Car") {
-                    car.id = this.id;
+                    car.id = this.formData.id;
                     this.changeCarData(car);
-                    // this.$emit("editCarData", car)
                 }
             }
         },

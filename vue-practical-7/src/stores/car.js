@@ -1,4 +1,3 @@
-import { ref, computed } from "vue";
 import { defineStore } from "pinia";
 import Axios from "axios";
 
@@ -6,8 +5,6 @@ export const useCarStore = defineStore("car", {
 	state: () => ({
 		togglePopup: false,
 		title: "",
-		viewForm: false,
-		editForm: false,
 		editableCar: {},
 		cars: [],
 		car: {},
@@ -32,10 +29,10 @@ export const useCarStore = defineStore("car", {
 			} catch (e) {
 				alert(e);
 			}
-			this.closeForm();
+			this.togglePopup = false;
 		},
 		changeCarData(car) {
-			this.cars.forEach(async (c) => {
+			this.cars.find(async (c) => {
 				if (c.id === car.id) {
 					try {
 						const res = await Axios.put(
@@ -50,7 +47,7 @@ export const useCarStore = defineStore("car", {
 					}
 				}
 			});
-			this.closeForm();
+			this.togglePopup = false;
 		},
 		async removeCar(car) {
 			try {
@@ -79,19 +76,12 @@ export const useCarStore = defineStore("car", {
 				alert(err);
 			}
 		},
-		closeForm() {
-			this.viewForm = false;
-			this.editForm = false;
-			this.togglePopup = false;
-		},
 		editFormOpen(car) {
-			this.editForm = true;
 			this.togglePopup = true;
 			this.title = "Edit Car";
 			this.editableCar = car;
 		},
 		showCarForm() {
-			this.viewForm = true;
 			this.togglePopup = true;
 			this.title = "Add Car";
 		},

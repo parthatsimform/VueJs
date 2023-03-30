@@ -8,10 +8,10 @@
         <hr />
         <form class="loginForm" @submit.prevent="loginUser">
             <label for="email">Email:</label>
-            <input type="text" id="email" v-model="email" @input="validateEmail" ref="emailInput" />
+            <input type="text" id="email" v-model="user.email" @input="validateEmail" ref="emailInput" />
             <div class="emailError"></div>
             <label for="password">Password:</label>
-            <input type="password" id="password" v-model="password" @input="validatePassword" ref="passwordInput" />
+            <input type="password" id="password" v-model="user.password" @input="validatePassword" ref="passwordInput" />
             <div class="passwordError"></div>
             <button type="submit" class="submitForm">Login</button>
         </form>
@@ -19,17 +19,16 @@
 </template>
 
 <script>
-import Axios from 'axios';
+import { mapWritableState, mapActions } from 'pinia';
+import { useUserStore } from '../stores/user';
 
 export default {
     name: "Login",
-    data() {
-        return {
-            email: "",
-            password: "",
-        }
+    computed: {
+        ...mapWritableState(useUserStore, ['user'])
     },
     methods: {
+        ...mapActions(useUserStore, ['signinUser']),
         showError(ref, errDiv, err) {
             ref.focus();
             ref.style.border = "1px solid red";
@@ -41,7 +40,7 @@ export default {
         },
         validateEmail() {
             const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g
-            if (emailRegex.test(this.email)) {
+            if (emailRegex.test(this.user.email)) {
                 this.removeError(this.$refs.emailInput, 'emailError');
                 return true;
             } else {
@@ -51,7 +50,7 @@ export default {
         },
         validatePassword() {
             const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,12}$/
-            if (passwordRegex.test(this.password)) {
+            if (passwordRegex.test(this.user.password)) {
                 this.removeError(this.$refs.passwordInput, 'passwordError');
                 return true;
 
@@ -62,32 +61,7 @@ export default {
         },
         async loginUser() {
             if (this.validateEmail() && this.validatePassword()) {
-                // let allUsers;
-                // try {
-                //     const res = await Axios.get("https://testapi.io/api/dartya/resource/users");
-                //     const data = await res.data.data;
-                //     allUsers = data;
-                //     let user = allUsers.find(u => u.email == this.email && u.password == this.password)
-
-                //     if (user) {
-                //         this.$router.push({ name: "home" })
-                //     } else {
-                //         alert("User not found")
-                //     }
-                // } catch (err) {
-                //     alert(err)
-                // }
-
-                let user = {
-                    email: this.email,
-                    password: this.password
-                }
-                try {
-                    const res = await Axios.post("https://testapi.io/api/dartya/resource/users", user);
-                    console.log(res);
-                } catch (err) {
-                    alert(err)
-                }
+                this.signinUser(this.email, this.password);
             }
         }
     }
