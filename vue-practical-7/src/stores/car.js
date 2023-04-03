@@ -8,7 +8,21 @@ export const useCarStore = defineStore("car", {
 		editableCar: {},
 		cars: [],
 		car: {},
+		carID: "",
 	}),
+	getters: {
+		async getCar() {
+			try {
+				const res = await Axios.get(
+					`https://testapi.io/api/dartya/resource/cardata/${this.carID}`
+				);
+				const data = await res.data;
+				this.car = data;
+			} catch (err) {
+				alert(err);
+			}
+		},
+	},
 	actions: {
 		async getCars() {
 			const res = await Axios.get(
@@ -63,17 +77,6 @@ export const useCarStore = defineStore("car", {
 				}
 			} catch (e) {
 				alert(e);
-			}
-		},
-		async getCar(id) {
-			try {
-				const res = await Axios.get(
-					`https://testapi.io/api/dartya/resource/cardata/${id}`
-				);
-				const data = await res.data;
-				this.car = data;
-			} catch (err) {
-				alert(err);
 			}
 		},
 		editFormOpen(car) {

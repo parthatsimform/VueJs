@@ -42,13 +42,6 @@ export default {
     props: ["car"],
     methods: {
         ...mapActions(useCarStore, ["editFormOpen", 'removeCar']),
-        // checkForPrice(price) {
-        //     if (price) {
-        //         return "INFO";
-        //     } else {
-        //         return "Available Soon!";
-        //     }
-        // },
     },
 }
 </script>
@@ -149,6 +142,10 @@ export default {
 .deleteBtn:hover {
     transform: scale(130%);
     transition: all 0.3s ease;
+}
+
+.card:active .editBtn {
+    display: block;
 }
 
 .editBtn {

@@ -23,19 +23,18 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'pinia';
+import { mapState, mapWritableState } from 'pinia';
 import { useCarStore } from '../stores/car';
 
 export default {
     name: "CarDetail",
     computed: {
-        ...mapState(useCarStore, ['car'])
+        ...mapState(useCarStore, ['car', 'getCar']),
+        ...mapWritableState(useCarStore, ['carID'])
     },
-    methods: {
-        ...mapActions(useCarStore, ['getCar'])
-    },
-    created() {
-        this.getCar(this.$route.params.id)
+    async created() {
+        this.carID = this.$route.params.id
+        await this.getCar
     }
 }
 </script>
