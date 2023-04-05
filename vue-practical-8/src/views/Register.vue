@@ -62,6 +62,16 @@ export default {
     computed: {
         ...mapWritableState(useUserStore, ['user'])
     },
+    beforeRouteLeave() {
+        this.user.name = ''
+        this.user.email = ''
+        this.user.password = ''
+        this.user.cPassword = ''
+        this.user.role = ''
+        this.user.gender = ''
+        this.user.age = ''
+        this.user.dob = ''
+    },
     methods: {
         ...mapActions(useUserStore, ['signupUser']),
         showError(ref, errDiv, err) {

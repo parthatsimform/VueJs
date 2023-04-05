@@ -8,16 +8,24 @@
             </h1>
             <div class="navBtns">
                 <RouterLink :to="{ name: 'home' }" class="navBtn">Home</RouterLink>
-                <RouterLink :to="{ name: 'login' }" class="navBtn">Login</RouterLink>
-                <RouterLink :to="{ name: 'register' }" class="navBtn">Register</RouterLink>
+                <template v-if="isLoggedIn === false">
+                    <RouterLink :to="{ name: 'login' }" class="navBtn">Login</RouterLink>
+                    <RouterLink :to="{ name: 'register' }" class="navBtn">Register</RouterLink>
+                </template>
+                <RouterLink v-else :to="{ name: 'login' }" class="navBtn">LogOut</RouterLink>
             </div>
         </div>
     </nav>
 </template>
 
 <script>
+import { useUserStore } from '../stores/user'
+import { mapState } from 'pinia'
 export default {
     name: "NavBar",
+    computed: {
+        ...mapState(useUserStore, ['isLoggedIn'])
+    }
 }
 </script>
 

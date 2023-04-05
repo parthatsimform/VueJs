@@ -4,6 +4,7 @@ import { defineStore } from "pinia";
 
 export const useUserStore = defineStore("user", {
 	state: () => ({
+		isLoggedIn: false,
 		user: {
 			name: "",
 			email: "",
@@ -23,6 +24,7 @@ export const useUserStore = defineStore("user", {
 					newUser
 				);
 				if (res.status === 201) {
+					this.isLoggedIn = true;
 					router.push({ name: "home" });
 				}
 			} catch (err) {
@@ -30,6 +32,7 @@ export const useUserStore = defineStore("user", {
 			}
 		},
 		async signinUser(email, password) {
+			console.log(email, password);
 			let allUsers;
 			try {
 				const res = await Axios.get(
@@ -41,6 +44,7 @@ export const useUserStore = defineStore("user", {
 					(u) => u.email == email && u.password == password
 				);
 				if (user) {
+					this.isLoggedIn = true;
 					router.push({ name: "home" });
 				} else {
 					alert("User not found");

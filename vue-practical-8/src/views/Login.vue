@@ -27,6 +27,10 @@ export default {
     computed: {
         ...mapWritableState(useUserStore, ['user'])
     },
+    beforeRouteLeave() {
+        this.user.email = ''
+        this.user.password = ''
+    },
     methods: {
         ...mapActions(useUserStore, ['signinUser']),
         showError(ref, errDiv, err) {
@@ -61,7 +65,7 @@ export default {
         },
         async loginUser() {
             if (this.validateEmail() && this.validatePassword()) {
-                this.signinUser(this.email, this.password);
+                this.signinUser(this.user.email, this.user.password);
             }
         }
     }
