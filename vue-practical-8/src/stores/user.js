@@ -26,6 +26,7 @@ export const useUserStore = defineStore("user", {
 				if (res.status === 201) {
 					this.isLoggedIn = true;
 					window.localStorage.setItem("isLoggedIn", true);
+					window.localStorage.setItem("token", `ThisIsRandomKey`);
 					router.push({ name: "home" });
 				}
 			} catch (err) {
@@ -46,6 +47,7 @@ export const useUserStore = defineStore("user", {
 				if (user) {
 					this.isLoggedIn = true;
 					window.localStorage.setItem("isLoggedIn", true);
+					window.localStorage.setItem("token", `ThisIsRandomKey`);
 					router.push({ name: "home" });
 				} else {
 					alert("User not found");
@@ -56,6 +58,7 @@ export const useUserStore = defineStore("user", {
 		},
 		logOut() {
 			window.localStorage.removeItem("isLoggedIn");
+			window.localStorage.removeItem("token");
 			this.isLoggedIn = false;
 		},
 	},

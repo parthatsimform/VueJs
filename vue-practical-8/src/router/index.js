@@ -3,7 +3,7 @@ import Home from "../views/Home.vue";
 import Login from "../views/Login.vue";
 import Register from "../views/Register.vue";
 import CarDetail from "../views/CarDetail.vue";
-import { useUserStore } from "../stores/user";
+// import { useUserStore } from "../stores/user";
 
 const routes = [
 	{
@@ -45,7 +45,10 @@ router.beforeEach((to, from, next) => {
 		next();
 		return;
 	}
-	if (window.localStorage.getItem("isLoggedIn")) {
+	if (
+		window.localStorage.getItem("isLoggedIn") &&
+		window.localStorage.getItem("token")
+	) {
 		next();
 	} else {
 		alert("Please login first to see this protected content");

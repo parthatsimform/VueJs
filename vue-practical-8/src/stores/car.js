@@ -14,7 +14,14 @@ export const useCarStore = defineStore("car", {
 		async getCar() {
 			try {
 				const res = await Axios.get(
-					`https://testapi.io/api/dartya/resource/cardata/${this.carID}`
+					`https://testapi.io/api/dartya/resource/cardata/${this.carID}`,
+					{
+						headers: {
+							Authorization: `Bearer ${window.localStorage.getItem(
+								"token"
+							)}`,
+						},
+					}
 				);
 				const data = await res.data;
 				this.car = data;
@@ -26,7 +33,14 @@ export const useCarStore = defineStore("car", {
 	actions: {
 		async getCars() {
 			const res = await Axios.get(
-				"https://testapi.io/api/dartya/resource/cardata"
+				"https://testapi.io/api/dartya/resource/cardata",
+				{
+					headers: {
+						Authorization: `Bearer ${window.localStorage.getItem(
+							"token"
+						)}`,
+					},
+				}
 			);
 			const data = await res.data.data;
 			this.cars = data;
@@ -35,7 +49,14 @@ export const useCarStore = defineStore("car", {
 			try {
 				const res = await Axios.post(
 					"https://testapi.io/api/dartya/resource/cardata",
-					newCar
+					newCar,
+					{
+						headers: {
+							Authorization: `Bearer ${window.localStorage.getItem(
+								"token"
+							)}`,
+						},
+					}
 				);
 				if (res.status === 201) {
 					this.getCars();
@@ -51,7 +72,14 @@ export const useCarStore = defineStore("car", {
 					try {
 						const res = await Axios.put(
 							`https://testapi.io/api/dartya/resource/cardata/${c.id}`,
-							car
+							car,
+							{
+								headers: {
+									Authorization: `Bearer ${window.localStorage.getItem(
+										"token"
+									)}`,
+								},
+							}
 						);
 						if (res.status === 200) {
 							this.getCars();
@@ -69,7 +97,14 @@ export const useCarStore = defineStore("car", {
 					confirm("Are you sure you want to delete " + car.name + "?")
 				) {
 					const res = await Axios.delete(
-						`https://testapi.io/api/dartya/resource/cardata/${car.id}`
+						`https://testapi.io/api/dartya/resource/cardata/${car.id}`,
+						{
+							headers: {
+								Authorization: `Bearer ${window.localStorage.getItem(
+									"token"
+								)}`,
+							},
+						}
 					);
 					if (res.status === 204) {
 						this.getCars();
