@@ -51,7 +51,6 @@ router.beforeEach((to, from, next) => {
 	) {
 		next();
 	} else {
-		alert("Please login first to see this protected content");
 		next("/login");
 	}
 });
