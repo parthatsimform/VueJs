@@ -8,7 +8,7 @@
             </h1>
             <div class="navBtns">
                 <RouterLink :to="{ name: 'home' }" class="navBtn">Home</RouterLink>
-                <template v-if="isLoggedIn === false">
+                <template v-if="!isLoggedIn">
                     <RouterLink :to="{ name: 'login' }" class="navBtn">Login</RouterLink>
                     <RouterLink :to="{ name: 'register' }" class="navBtn">Register</RouterLink>
                 </template>

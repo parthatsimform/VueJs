@@ -45,10 +45,10 @@ router.beforeEach((to, from, next) => {
 		next();
 		return;
 	}
-	const user = useUserStore();
-	if (user.isLoggedIn) {
+	if (window.localStorage.getItem("isLoggedIn")) {
 		next();
 	} else {
+		alert("Please login first to see this protected content");
 		next("/login");
 	}
 });
