@@ -12,7 +12,7 @@
                     <RouterLink :to="{ name: 'login' }" class="navBtn">Login</RouterLink>
                     <RouterLink :to="{ name: 'register' }" class="navBtn">Register</RouterLink>
                 </template>
-                <RouterLink v-else :to="{ name: 'login' }" class="navBtn">LogOut</RouterLink>
+                <RouterLink v-else :to="{ name: 'login' }" @click="logOut" class="navBtn">LogOut</RouterLink>
             </div>
         </div>
     </nav>
@@ -20,11 +20,14 @@
 
 <script>
 import { useUserStore } from '../stores/user'
-import { mapState } from 'pinia'
+import { mapState, mapActions } from 'pinia'
 export default {
     name: "NavBar",
     computed: {
         ...mapState(useUserStore, ['isLoggedIn'])
+    },
+    methods: {
+        ...mapActions(useUserStore, ['logOut'])
     }
 }
 </script>

@@ -53,5 +53,8 @@ export const useUserStore = defineStore("user", {
 				alert(err);
 			}
 		},
+		logOut() {
+			this.isLoggedIn = false;
+		},
 	},
 });
