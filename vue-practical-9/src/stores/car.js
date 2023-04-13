@@ -14,7 +14,7 @@ export const useCarStore = defineStore("car", {
 		async getCar() {
 			try {
 				const res = await Axios.get(
-					`https://testapi.io/api/dartya/resource/cardata/${this.carID}`,
+					`${import.meta.env.VITE_CAR_URL}/${this.carID}`,
 					{
 						headers: {
 							Authorization: `Bearer ${window.localStorage.getItem(
@@ -32,23 +32,20 @@ export const useCarStore = defineStore("car", {
 	},
 	actions: {
 		async getCars() {
-			const res = await Axios.get(
-				"https://testapi.io/api/dartya/resource/cardata",
-				{
-					headers: {
-						Authorization: `Bearer ${window.localStorage.getItem(
-							"token"
-						)}`,
-					},
-				}
-			);
+			const res = await Axios.get(import.meta.env.VITE_CAR_URL, {
+				headers: {
+					Authorization: `Bearer ${window.localStorage.getItem(
+						"token"
+					)}`,
+				},
+			});
 			const data = await res.data.data;
 			this.cars = data;
 		},
 		async newCarData(newCar) {
 			try {
 				const res = await Axios.post(
-					"https://testapi.io/api/dartya/resource/cardata",
+					import.meta.env.VITE_CAR_URL,
 					newCar,
 					{
 						headers: {
@@ -71,7 +68,7 @@ export const useCarStore = defineStore("car", {
 				if (c.id === car.id) {
 					try {
 						const res = await Axios.put(
-							`https://testapi.io/api/dartya/resource/cardata/${c.id}`,
+							`${import.meta.env.VITE_CAR_URL}/${c.id}`,
 							car,
 							{
 								headers: {
@@ -97,7 +94,7 @@ export const useCarStore = defineStore("car", {
 					confirm("Are you sure you want to delete " + car.name + "?")
 				) {
 					const res = await Axios.delete(
-						`https://testapi.io/api/dartya/resource/cardata/${car.id}`,
+						`${import.meta.env.VITE_CAR_URL}/${car.id}`,
 						{
 							headers: {
 								Authorization: `Bearer ${window.localStorage.getItem(

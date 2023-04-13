@@ -20,7 +20,7 @@ export const useUserStore = defineStore("user", {
 		async signupUser(newUser) {
 			try {
 				const res = await Axios.post(
-					"https://testapi.io/api/dartya/resource/users",
+					import.meta.env.VITE_USER_URL,
 					newUser
 				);
 				if (res.status === 201) {
@@ -36,9 +36,7 @@ export const useUserStore = defineStore("user", {
 		async signinUser(email, password) {
 			let allUsers;
 			try {
-				const res = await Axios.get(
-					"https://testapi.io/api/dartya/resource/users"
-				);
+				const res = await Axios.get(import.meta.env.VITE_USER_URL);
 				const data = await res.data.data;
 				allUsers = data;
 				let user = allUsers.find(
