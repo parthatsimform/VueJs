@@ -3,7 +3,7 @@
         <div class="carData">
             <div class="formHeader">
                 <div class="formTitle">
-                    <h2>{{ title }}</h2>
+                    <h2>{{ carStore.title }}</h2>
                 </div>
                 <div class="closePopup" @click="closePopup">
                     <i class="fa-solid fa-xmark"></i>
@@ -31,104 +31,107 @@
     </div>
 </template>
 
-<script>
-import { mapState, mapWritableState, mapActions } from 'pinia';
+<script setup>
+import { ref, reactive } from 'vue';
 import { useCarStore } from '../stores/car'
-export default {
-    name: "CarDataForm",
-    computed: {
-        ...mapState(useCarStore, ['title']),
-        ...mapWritableState(useCarStore, ['editableCar', 'togglePopup']),
-        formData() {
-            if (this.title == "Edit Car") {
-                return {
-                    id: this.editableCar.id,
-                    name: this.editableCar.name,
-                    image: this.editableCar.image,
-                    details: this.editableCar.details,
-                    price: this.editableCar.price,
-                }
-            } else {
-                return {
-                    name: "",
-                    image: "",
-                    details: "",
-                    price: "",
-                }
-            }
-        },
-    },
-    methods: {
-        ...mapActions(useCarStore, ['newCarData', 'changeCarData']),
-        urlChacker() {
-            const urlPattern = /^((https?:)?\/\/)?[^\s]+\.(jpe?g|png|gif|bmp|webp)(\?\S*)?$/i;
-            return urlPattern.test(this.formData.image);
-        },
-        showError(ref, errDiv, err) {
-            ref.focus();
-            ref.style.border = "1px solid red";
-            document.getElementsByClassName(errDiv)[0].innerHTML = err;
-        },
-        removeError(ref, errDiv) {
-            ref.style.border = "1px solid rgb(192, 192, 192)";
-            document.getElementsByClassName(errDiv)[0].innerHTML = "";
-        },
-        closePopup() {
-            this.togglePopup = false;
-        },
-        validateName() {
-            if (this.formData.name === "") {
-                this.showError(this.$refs.nameInput, 'nameError', "*Car name is required")
-                return false;
-            } else {
-                this.removeError(this.$refs.nameInput, 'nameError');
-                return true;
-            }
-        },
-        validateImage() {
-            if (!this.urlChacker()) {
-                this.showError(this.$refs.imageInput, 'imageError', "*Please enter a valid image URL");
-                return false;
-            } else {
-                this.removeError(this.$refs.imageInput, 'imageError');
-                return true;
-            }
-        },
-        validatedetails() {
-            if (this.formData.details === "" || this.formData.details.length < 30 || this.formData.details.length > 120) {
-                this.showError(this.$refs.detailsInput, 'detailsError', "*Car detail in limit of 30 to 120 characters is required");
-                return false;
-            } else {
-                this.removeError(this.$refs.detailsInput, 'detailsError');
-                return true;
-            }
-        },
-        validatePrice() {
-            if (this.formData.price !== "" && Number.isInteger(Number(this.formData.price))) {
-                this.removeError(this.$refs.priceInput, 'priceError');
-                return true;
-            } else {
-                this.showError(this.$refs.priceInput, 'priceError', "*Car Price in integer is required");
-                return false;
-            }
-        },
-        addOrEditCarData() {
-            if (this.validateName() && this.validateImage() && this.validatedetails() && this.validatePrice()) {
-                const car = {
-                    name: this.formData.name,
-                    image: this.formData.image,
-                    details: this.formData.details,
-                    price: this.formData.price,
-                }
-                if (this.title == "Add Car") {
-                    this.newCarData(car);
-                }
-                if (this.title == "Edit Car") {
-                    car.id = this.formData.id;
-                    this.changeCarData(car);
-                }
-            }
-        },
+const carStore = useCarStore()
+
+let nameInput = ref(null)
+let imageInput = ref(null)
+let detailsInput = ref(null)
+let priceInput = ref(null)
+
+const formData = reactive({
+    id: null,
+    name: '',
+    image: '',
+    details: '',
+    price: ''
+})
+
+if (carStore.title == "Edit Car") {
+    formData.id = carStore.editableCar.id
+    formData.name = carStore.editableCar.name
+    formData.image = carStore.editableCar.image
+    formData.details = carStore.editableCar.details
+    formData.price = carStore.editableCar.price
+}
+
+const urlChacker = () => {
+    const urlPattern = /^((https?:)?\/\/)?[^\s]+\.(jpe?g|png|gif|bmp|webp)(\?\S*)?$/i;
+    return urlPattern.test(formData.image);
+}
+
+const showError = (ref, errDiv, err) => {
+    ref.focus();
+    ref.style.border = "1px solid red";
+    document.getElementsByClassName(errDiv)[0].innerHTML = err;
+}
+
+const removeError = (ref, errDiv) => {
+    ref.style.border = "1px solid rgb(192, 192, 192)";
+    document.getElementsByClassName(errDiv)[0].innerHTML = "";
+}
+
+const closePopup = () => {
+    carStore.togglePopup = false;
+}
+
+const validateName = () => {
+    if (formData.name === "") {
+        showError(nameInput, 'nameError', "*Car name is required")
+        return false;
+    } else {
+        removeError(nameInput, 'nameError');
+        return true;
+    }
+}
+
+const validateImage = () => {
+    if (!urlChacker()) {
+        showError(imageInput, 'imageError', "*Please enter a valid image URL");
+        return false;
+    } else {
+        removeError(imageInput, 'imageError');
+        return true;
+    }
+}
+
+const validatedetails = () => {
+    if (formData.details === "" || formData.details.length < 30 || formData.details.length > 120) {
+        showError(detailsInput, 'detailsError', "*Car detail in limit of 30 to 120 characters is required");
+        return false;
+    } else {
+        removeError(detailsInput, 'detailsError');
+        return true;
+    }
+}
+
+const validatePrice = () => {
+    if (tformData.price !== "" && Number.isInteger(Number(formData.price))) {
+        removeError(priceInput, 'priceError');
+        return true;
+    } else {
+        showError(priceInput, 'priceError', "*Car Price in integer is required");
+        return false;
+    }
+}
+
+const addOrEditCarData = () => {
+    if (validateName() && validateImage() && validatedetails() && validatePrice()) {
+        const car = {
+            name: formData.name,
+            image: formData.image,
+            details: formData.details,
+            price: formData.price,
+        }
+        if (carStore.title == "Add Car") {
+            carStore.newCarData(car);
+        }
+        if (carStore.title == "Edit Car") {
+            car.id = formData.id;
+            carStore.changeCarData(car);
+        }
     }
 }
 </script>

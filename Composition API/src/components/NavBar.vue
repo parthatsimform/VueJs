@@ -2,34 +2,25 @@
     <nav>
         <div class="navContent">
             <h1>
-                <RouterLink :to="{ name: 'home' }" exact-active-class="no-active" class="navBarBrand"><span>Car
-                        Gallery</span>
+                <RouterLink :to="{ name: 'home' }" exact-active-class="no-active" class="navBarBrand">
+                    <span>Car Gallery</span>
                 </RouterLink>
             </h1>
             <div class="navBtns">
                 <RouterLink :to="{ name: 'home' }" class="navBtn">Home</RouterLink>
-                <template v-if="!isLoggedIn">
+                <template v-if="!userStore.isLoggedIn">
                     <RouterLink :to="{ name: 'login' }" class="navBtn">Login</RouterLink>
                     <RouterLink :to="{ name: 'register' }" class="navBtn">Register</RouterLink>
                 </template>
-                <RouterLink v-else :to="{ name: 'login' }" @click="logOut" class="navBtn">LogOut</RouterLink>
+                <RouterLink v-else :to="{ name: 'login' }" @click="userStore.logOut" class="navBtn">LogOut</RouterLink>
             </div>
         </div>
     </nav>
 </template>
 
-<script>
+<script setup>
 import { useUserStore } from '../stores/user'
-import { mapState, mapActions } from 'pinia'
-export default {
-    name: "NavBar",
-    computed: {
-        ...mapState(useUserStore, ['isLoggedIn'])
-    },
-    methods: {
-        ...mapActions(useUserStore, ['logOut'])
-    }
-}
+const userStore = useUserStore()
 </script>
 
 <style scoped>

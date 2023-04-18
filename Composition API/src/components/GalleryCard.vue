@@ -3,7 +3,7 @@
         <div class="cardHeader">
             <Transition name="edit">
                 <div class="editBtnDiv">
-                    <button class="editBtn" @click.prevent.stop="editFormOpen(car)" title="Edit"><i
+                    <button class="editBtn" @click.prevent.stop="carStore.editFormOpen(props.car)" title="Edit"><i
                             class="fa-solid fa-pen-to-square"></i>
                     </button>
                 </div>
@@ -12,38 +12,31 @@
                 <h2>{{ car.name }}</h2>
             </div>
             <div class="deleteBtnDiv">
-                <button class="deleteBtn" @click.prevent.stop="removeCar(car)" title="Delete"><i
+                <button class="deleteBtn" @click.prevent.stop="carStore.removeCar(props.car)" title="Delete"><i
                         class="fa-solid fa-trash-can"></i>
                 </button>
             </div>
         </div>
         <div class="cardImgDiv">
-            <img :src="car.image" :alt="car.name" class="cardImg">
+            <img :src="props.car.image" :alt="props.car.name" class="cardImg">
         </div>
         <div class="cardDsc">
-            <p>{{ car.details }}</p>
+            <p>{{ props.car.details }}</p>
         </div>
 
         <div class="info">
-            <RouterLink :to="{ name: 'details', params: { id: `${car.id}` } }" class="infoBtn" :disabled="!car.price"
-                :class="{ notAvailable: !car.price }">
-                <!-- {{ checkForPrice(car.price) }} -->
+            <RouterLink :to="{ name: 'details', params: { id: `${car.id}` } }" class="infoBtn" :disabled="!props.car.price"
+                :class="{ notAvailable: !props.car.price }">
                 INFO
             </RouterLink>
         </div>
     </div>
 </template>
 
-<script>
+<script setup>
 import { useCarStore } from '../stores/car';
-import { mapActions } from 'pinia';
-export default {
-    name: "GalleryCard",
-    props: ["car"],
-    methods: {
-        ...mapActions(useCarStore, ["editFormOpen", 'removeCar']),
-    },
-}
+const carStore = useCarStore()
+const props = defineProps(["car"])
 </script>
 
 <style scoped>
