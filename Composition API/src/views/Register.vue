@@ -55,6 +55,7 @@
 </template>
 
 <script setup>
+import { ref } from 'vue';
 import { onBeforeRouteLeave } from 'vue-router'
 import { useUserStore } from '../stores/user'
 
@@ -174,7 +175,7 @@ const validateDOB = () => {
 }
 
 const validateForm = () => {
-    if (validateName() && validateEmail() && validatePassword() && validateCPassword() && validateRole() && validateGender() && tvalidateAge() && validateDOB()) {
+    if (validateName() && validateEmail() && validatePassword() && validateCPassword() && validateRole() && validateGender() && validateAge() && validateDOB()) {
         return true;
     } else {
         return false;

@@ -63,13 +63,13 @@ const urlChacker = () => {
 }
 
 const showError = (ref, errDiv, err) => {
-    ref.focus();
-    ref.style.border = "1px solid red";
+    ref.value.focus();
+    ref.value.style.border = "1px solid red";
     document.getElementsByClassName(errDiv)[0].innerHTML = err;
 }
 
 const removeError = (ref, errDiv) => {
-    ref.style.border = "1px solid rgb(192, 192, 192)";
+    ref.value.style.border = "1px solid rgb(192, 192, 192)";
     document.getElementsByClassName(errDiv)[0].innerHTML = "";
 }
 
@@ -108,7 +108,7 @@ const validatedetails = () => {
 }
 
 const validatePrice = () => {
-    if (tformData.price !== "" && Number.isInteger(Number(formData.price))) {
+    if (formData.price !== "" && Number.isInteger(Number(formData.price))) {
         removeError(priceInput, 'priceError');
         return true;
     } else {
@@ -155,7 +155,7 @@ const addOrEditCarData = () => {
     border-radius: 10px;
     width: 85%;
     max-width: 500px;
-    height: 600px;
+    min-height: 600px;
     padding: 20px 30px;
 }
 
