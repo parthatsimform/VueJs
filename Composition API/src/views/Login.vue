@@ -8,66 +8,69 @@
         <hr />
         <form class="loginForm" @submit.prevent="loginUser">
             <label for="email">Email:</label>
-            <input type="text" id="email" v-model="user.email" @input="validateEmail" ref="emailInput" />
+            <input type="text" id="email" v-model="userStore.user.email" @input="validateEmail" ref="emailInput" />
             <div class="emailError"></div>
             <label for="password">Password:</label>
-            <input type="password" id="password" v-model="user.password" @input="validatePassword" ref="passwordInput" />
+            <input type="password" id="password" v-model="userStore.user.password" @input="validatePassword"
+                ref="passwordInput" />
             <div class="passwordError"></div>
             <button type="submit" class="submitForm">Login</button>
         </form>
     </div>
 </template>
 
-<script>
-import { mapWritableState, mapActions } from 'pinia';
+<script setup>
+import { ref } from 'vue';
+import { onBeforeRouteLeave } from 'vue-router';
 import { useUserStore } from '../stores/user';
 
-export default {
-    name: "Login",
-    computed: {
-        ...mapWritableState(useUserStore, ['user'])
-    },
-    beforeRouteLeave() {
-        this.user.email = ''
-        this.user.password = ''
-    },
-    methods: {
-        ...mapActions(useUserStore, ['signinUser']),
-        showError(ref, errDiv, err) {
-            ref.focus();
-            ref.style.border = "1px solid red";
-            document.getElementsByClassName(errDiv)[0].innerHTML = err;
-        },
-        removeError(ref, errDiv) {
-            ref.style.border = "1px solid rgb(192, 192, 192)";
-            document.getElementsByClassName(errDiv)[0].innerHTML = "";
-        },
-        validateEmail() {
-            const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g
-            if (emailRegex.test(this.user.email)) {
-                this.removeError(this.$refs.emailInput, 'emailError');
-                return true;
-            } else {
-                this.showError(this.$refs.emailInput, 'emailError', "*Valid Email ID is required")
-                return false;
-            }
-        },
-        validatePassword() {
-            const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,12}$/
-            if (passwordRegex.test(this.user.password)) {
-                this.removeError(this.$refs.passwordInput, 'passwordError');
-                return true;
 
-            } else {
-                this.showError(this.$refs.passwordInput, 'passwordError', "*Password of length 8-12 is required and must contain at least one numeric digit and a special character")
-                return false;
-            }
-        },
-        async loginUser() {
-            if (this.validateEmail() && this.validatePassword()) {
-                this.signinUser(this.user.email, this.user.password);
-            }
-        }
+const userStore = useUserStore()
+
+let emailInput = ref(null)
+let passwordInput = ref(null)
+
+onBeforeRouteLeave(() => {
+    userStore.user.email = ''
+    userStore.user.password = ''
+})
+
+const showError = (ref, errDiv, err) => {
+    ref.value.focus();
+    ref.value.style.border = "1px solid red";
+    document.getElementsByClassName(errDiv)[0].innerHTML = err;
+}
+
+const removeError = (ref, errDiv) => {
+    ref.value.style.border = "1px solid rgb(192, 192, 192)";
+    document.getElementsByClassName(errDiv)[0].innerHTML = "";
+}
+
+const validateEmail = () => {
+    const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g
+    if (emailRegex.test(userStore.user.email)) {
+        removeError(emailInput, 'emailError');
+        return true;
+    } else {
+        showError(emailInput, 'emailError', "*Valid Email ID is required")
+        return false;
+    }
+}
+
+const validatePassword = () => {
+    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,12}$/
+    if (passwordRegex.test(userStore.user.password)) {
+        removeError(passwordInput, 'passwordError');
+        return true;
+    } else {
+        showError(passwordInput, 'passwordError', "*Password of length 8-12 is required and must contain at least one numeric digit and a special character")
+        return false;
+    }
+}
+
+const loginUser = async () => {
+    if (validateEmail() && validatePassword()) {
+        userStore.signinUser(userStore.user.email, userStore.user.password);
     }
 }
 </script>

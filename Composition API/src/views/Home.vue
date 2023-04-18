@@ -1,15 +1,15 @@
 <template>
     <div>
         <Transition name="form" mode="out-in">
-            <CarDataForm v-if="togglePopup" />
+            <CarDataForm v-if="carStore.togglePopup" />
         </Transition>
-        <div id="homeComponent" :class="{ fadeBG: togglePopup }">
+        <div id="homeComponent" :class="{ fadeBG: carStore.togglePopup }">
             <div id="addCar">
-                <button class="addCarBtn" @click.prevent.stop="showCarForm">+ Add Car</button>
+                <button class="addCarBtn" @click.prevent.stop="carStore.showCarForm">+ Add Car</button>
             </div>
             <div id="carComponent">
                 <TransitionGroup name="carCard" appear>
-                    <div v-for="car in cars" :key="car.id">
+                    <div v-for="car in carStore.cars" :key="car.id">
                         <GalleryCard :car="car" />
                     </div>
                 </TransitionGroup>
@@ -18,30 +18,14 @@
     </div>
 </template>
 
-<script>
+<script setup>
 import GalleryCard from '../components/GalleryCard.vue';
 import CarDataForm from '../components/CarDataForm.vue';
-import { mapState, mapActions } from 'pinia';
 import { useCarStore } from '../stores/car'
 
-export default {
-    name: "Home",
-    components: {
-        GalleryCard,
-        CarDataForm
-    },
+const carStore = useCarStore()
 
-    computed: {
-        ...mapState(useCarStore, ['cars', 'togglePopup']),
-
-    },
-    methods: {
-        ...mapActions(useCarStore, ['getCars', 'showCarForm']),
-    },
-    created() {
-        this.getCars();
-    }
-}
+carStore.getCars();
 </script>
 
 <style>

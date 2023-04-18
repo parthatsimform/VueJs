@@ -1,28 +1,24 @@
 <template>
   <div>
     <NavBar />
-
-    <RouterView v-slot="{ Component }">
-      <Transition name="route" mode="out-in">
-        <component :is="Component"></component>
-      </Transition>
-    </RouterView>
-
+    <Suspense>
+      <RouterView v-slot="{ Component }">
+        <Transition name="route" mode="out-in">
+          <component :is="Component"></component>
+        </Transition>
+      </RouterView>
+    </Suspense>
   </div>
 </template>
 
-<script>
-export default {
-  name: "App",
-  created() {
-    if (import.meta.env.MODE === 'production') {
-      console.log("Production Build URL:", import.meta.env.VITE_PRODUCTION);
-    } else if (import.meta.env.MODE === 'staging') {
-      console.log("Staging Build URL:", import.meta.env.VITE_STAGING);
-    } else if (import.meta.env.MODE === 'development') {
-      console.log("Development Build URL:", import.meta.env.VITE_DEVELOPMENT);
-    }
-  }
+<script setup>
+import { Suspense } from 'vue';
+if (import.meta.env.MODE === 'production') {
+  console.log("Production Build URL:", import.meta.env.VITE_PRODUCTION);
+} else if (import.meta.env.MODE === 'staging') {
+  console.log("Staging Build URL:", import.meta.env.VITE_STAGING);
+} else if (import.meta.env.MODE === 'development') {
+  console.log("Development Build URL:", import.meta.env.VITE_DEVELOPMENT);
 }
 </script>
 

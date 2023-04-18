@@ -5,38 +5,30 @@
         </div>
         <div class="carDetail">
             <div class="carImg">
-                <img :src="car.image" :alt="car.name" />
+                <img :src="carStore.car.image" :alt="carStore.car.name" />
             </div>
             <div class="carInfo">
                 <div class="carName">
-                    <h2>{{ car.name }}</h2>
+                    <h2>{{ carStore.car.name }}</h2>
                 </div>
                 <div class="carDesc">
-                    <p>{{ car.details }}</p>
+                    <p>{{ carStore.car.details }}</p>
                 </div>
                 <div class="carPrice">
-                    <p>Price:&nbsp;<span>₹{{ car.price }}</span></p>
+                    <p>Price:&nbsp;<span>₹{{ carStore.car.price }}</span></p>
                 </div>
             </div>
         </div>
     </div>
 </template>
 
-<script>
-import { mapState, mapWritableState } from 'pinia';
+<script setup>
+import { useRoute } from 'vue-router';
 import { useCarStore } from '../stores/car';
-
-export default {
-    name: "CarDetail",
-    computed: {
-        ...mapState(useCarStore, ['car', 'getCar']),
-        ...mapWritableState(useCarStore, ['carID'])
-    },
-    async created() {
-        this.carID = this.$route.params.id
-        await this.getCar
-    }
-}
+const carStore = useCarStore()
+const route = useRoute()
+carStore.carID = route.params.id
+await carStore.getCar
 </script>
 
 <style scoped>
