@@ -9,7 +9,7 @@
             </div>
             <div id="carComponent">
                 <TransitionGroup name="carCard" appear>
-                    <div v-for="car in cars" :key="car.id">
+                    <div v-for="car in loadAllCars" :key="car.id">
                         <GalleryCard :car="car" />
                     </div>
                 </TransitionGroup>
@@ -32,7 +32,7 @@ export default {
     },
 
     computed: {
-        ...mapState(useCarStore, ['cars', 'togglePopup']),
+        ...mapState(useCarStore, ['togglePopup', 'loadAllCars']),
 
     },
     methods: {

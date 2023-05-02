@@ -5,17 +5,17 @@
         </div>
         <div class="carDetail">
             <div class="carImg">
-                <img :src="car.image" :alt="car.name" />
+                <img :src="loadCar.image" :alt="car.name" />
             </div>
             <div class="carInfo">
                 <div class="carName">
-                    <h2>{{ car.name }}</h2>
+                    <h2>{{ loadCar.name }}</h2>
                 </div>
                 <div class="carDesc">
-                    <p>{{ car.details }}</p>
+                    <p>{{ loadCar.details }}</p>
                 </div>
                 <div class="carPrice">
-                    <p>Price:&nbsp;<span>₹{{ car.price }}</span></p>
+                    <p>Price:&nbsp;<span>₹{{ loadCar.price }}</span></p>
                 </div>
             </div>
         </div>
@@ -23,18 +23,21 @@
 </template>
 
 <script>
-import { mapState, mapWritableState } from 'pinia';
+import { mapActions, mapState, mapWritableState } from 'pinia';
 import { useCarStore } from '../stores/car';
 
 export default {
     name: "CarDetail",
     computed: {
-        ...mapState(useCarStore, ['car', 'getCar']),
+        ...mapState(useCarStore, ['car', 'loadCar']),
         ...mapWritableState(useCarStore, ['carID'])
+    },
+    methods: {
+        ...mapActions(useCarStore, ['getCar'])
     },
     async created() {
         this.carID = this.$route.params.id
-        await this.getCar
+        await this.getCar()
     }
 }
 </script>

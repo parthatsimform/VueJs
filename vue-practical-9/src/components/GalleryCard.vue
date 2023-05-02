@@ -25,9 +25,7 @@
         </div>
 
         <div class="info">
-            <RouterLink :to="{ name: 'details', params: { id: `${car.id}` } }" class="infoBtn" :disabled="!car.price"
-                :class="{ notAvailable: !car.price }">
-                <!-- {{ checkForPrice(car.price) }} -->
+            <RouterLink :to="{ name: 'details', params: { id: `${car.id}` } }" class="infoBtn" :disabled="!car.price">
                 INFO
             </RouterLink>
         </div>
