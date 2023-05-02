@@ -9,7 +9,7 @@
             </div>
             <div id="carComponent">
                 <TransitionGroup name="carCard" appear>
-                    <div v-for="car in carStore.cars" :key="car.id">
+                    <div v-for="car in carStore.loadAllCars" :key="car.id">
                         <GalleryCard :car="car" />
                     </div>
                 </TransitionGroup>

@@ -11,6 +11,25 @@ export const useCarStore = defineStore("car", {
 		carID: "",
 	}),
 	getters: {
+		loadAllCars() {
+			return this.cars;
+		},
+		loadCar() {
+			return this.car;
+		},
+	},
+	actions: {
+		async getCars() {
+			const res = await Axios.get(import.meta.env.VITE_CAR_URL, {
+				headers: {
+					Authorization: `Bearer ${window.localStorage.getItem(
+						"token"
+					)}`,
+				},
+			});
+			const data = await res.data.data;
+			this.cars = data;
+		},
 		async getCar() {
 			try {
 				const res = await Axios.get(
@@ -28,19 +47,6 @@ export const useCarStore = defineStore("car", {
 			} catch (err) {
 				alert(err);
 			}
-		},
-	},
-	actions: {
-		async getCars() {
-			const res = await Axios.get(import.meta.env.VITE_CAR_URL, {
-				headers: {
-					Authorization: `Bearer ${window.localStorage.getItem(
-						"token"
-					)}`,
-				},
-			});
-			const data = await res.data.data;
-			this.cars = data;
 		},
 		async newCarData(newCar) {
 			try {
@@ -63,29 +69,26 @@ export const useCarStore = defineStore("car", {
 			}
 			this.togglePopup = false;
 		},
-		changeCarData(car) {
-			this.cars.find(async (c) => {
-				if (c.id === car.id) {
-					try {
-						const res = await Axios.put(
-							`${import.meta.env.VITE_CAR_URL}/${c.id}`,
-							car,
-							{
-								headers: {
-									Authorization: `Bearer ${window.localStorage.getItem(
-										"token"
-									)}`,
-								},
-							}
-						);
-						if (res.status === 200) {
-							this.getCars();
-						}
-					} catch (e) {
-						alert(e);
+		async changeCarData(car) {
+			try {
+				const res = await Axios.put(
+					`${import.meta.env.VITE_CAR_URL}/${car.id}`,
+					car,
+					{
+						headers: {
+							Authorization: `Bearer ${window.localStorage.getItem(
+								"token"
+							)}`,
+						},
 					}
+				);
+				console.log("www");
+				if (res.status === 200) {
+					this.getCars();
 				}
-			});
+			} catch (e) {
+				alert(e);
+			}
 			this.togglePopup = false;
 		},
 		async removeCar(car) {

@@ -28,7 +28,7 @@ import { useCarStore } from '../stores/car';
 const carStore = useCarStore()
 const route = useRoute()
 carStore.carID = route.params.id
-await carStore.getCar
+carStore.getCar()
 </script>
 
 <style scoped>
