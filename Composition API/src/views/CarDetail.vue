@@ -5,17 +5,17 @@
         </div>
         <div class="carDetail">
             <div class="carImg">
-                <img :src="carStore.car.image" :alt="carStore.car.name" />
+                <img :src="carStore.loadCar.image" :alt="carStore.loadCar.name" />
             </div>
             <div class="carInfo">
                 <div class="carName">
-                    <h2>{{ carStore.car.name }}</h2>
+                    <h2>{{ carStore.loadCar.name }}</h2>
                 </div>
                 <div class="carDesc">
-                    <p>{{ carStore.car.details }}</p>
+                    <p>{{ carStore.loadCar.details }}</p>
                 </div>
                 <div class="carPrice">
-                    <p>Price:&nbsp;<span>₹{{ carStore.car.price }}</span></p>
+                    <p>Price:&nbsp;<span>₹{{ carStore.loadCar.price }}</span></p>
                 </div>
             </div>
         </div>
