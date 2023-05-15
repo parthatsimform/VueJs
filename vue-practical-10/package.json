@@ -1,15 +1,24 @@
 {
-  "name": "nuxt-app",
-  "private": true,
-  "scripts": {
-    "build": "nuxt build",
-    "dev": "nuxt dev",
-    "generate": "nuxt generate",
-    "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
-  },
-  "devDependencies": {
-    "@types/node": "^18",
-    "nuxt": "^3.4.3"
-  }
+	"name": "nuxt-app",
+	"private": true,
+	"scripts": {
+		"build": "nuxt build",
+		"dev": "nuxt dev",
+		"generate": "nuxt generate",
+		"preview": "nuxt preview",
+		"postinstall": "nuxt prepare"
+	},
+	"devDependencies": {
+		"@pinia-plugin-persistedstate/nuxt": "^1.1.1",
+		"@types/node": "^18",
+		"nuxt": "^3.4.3"
+	},
+	"overrides": {
+		"vue": "latest"
+	},
+	"dependencies": {
+		"@pinia/nuxt": "^0.4.10",
+		"axios": "^1.4.0",
+		"pinia": "^2.0.36"
+	}
 }
