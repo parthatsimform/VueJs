@@ -24,7 +24,7 @@ definePageMeta({
 })
 import { useCarStore } from '../stores/car'
 const carStore = useCarStore()
-carStore.getCars();
+await carStore.getCars();
 </script>
 
 <style>

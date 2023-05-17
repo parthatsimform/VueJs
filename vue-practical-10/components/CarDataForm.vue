@@ -15,17 +15,17 @@
 
             <hr />
             <form class="carForm" @submit.prevent="addOrEditCarData">
-                <label for="carName">Car Name:</label>
+                <label for="carName">Car Name*</label>
                 <input id="carName" v-model="formData.name" @input="validateName" ref="nameInput" />
                 <div class="nameError"></div>
-                <label for="carImage">Car Image:</label>
+                <label for="carImage">Car Image*</label>
                 <input id="carImage" v-model="formData.image" @input="validateImage" ref="imageInput" />
                 <div class="imageError"></div>
-                <label for="cardetails">Details:</label>
+                <label for="cardetails">Details*</label>
                 <textarea id="cardetails" cols="30" rows="4" v-model="formData.details" @change="validatedetails"
                     ref="detailsInput" />
                 <div class="detailsError"></div>
-                <label for="carPrice">Car Price(₹):</label>
+                <label for="carPrice">Car Price(₹)*</label>
                 <input id="carPrice" v-model="formData.price" @input="validatePrice" ref="priceInput" />
                 <div class="priceError"></div>
                 <button type="submit" id="submitForm">Submit</button>
@@ -37,7 +37,6 @@
 <script setup>
 import { useCarStore } from '../stores/car'
 const carStore = useCarStore()
-console.log(carStore.title);
 let nameInput = ref(null)
 let imageInput = ref(null)
 let detailsInput = ref(null)
@@ -81,7 +80,7 @@ const closePopup = () => {
 
 const validateName = () => {
     if (formData.name === "") {
-        showError(nameInput, 'nameError', "*Car name is required")
+        showError(nameInput, 'nameError', "Car name is required")
         return false;
     } else {
         removeError(nameInput, 'nameError');
@@ -91,7 +90,7 @@ const validateName = () => {
 
 const validateImage = () => {
     if (!urlChacker()) {
-        showError(imageInput, 'imageError', "*Please enter a valid image URL");
+        showError(imageInput, 'imageError', "Please enter a valid image URL");
         return false;
     } else {
         removeError(imageInput, 'imageError');
@@ -101,7 +100,7 @@ const validateImage = () => {
 
 const validatedetails = () => {
     if (formData.details === "" || formData.details.length < 30 || formData.details.length > 120) {
-        showError(detailsInput, 'detailsError', "*Car detail in limit of 30 to 120 characters is required");
+        showError(detailsInput, 'detailsError', "Car detail in limit of 30 to 120 characters is required");
         return false;
     } else {
         removeError(detailsInput, 'detailsError');
@@ -114,7 +113,7 @@ const validatePrice = () => {
         removeError(priceInput, 'priceError');
         return true;
     } else {
-        showError(priceInput, 'priceError', "*Car Price in integer is required");
+        showError(priceInput, 'priceError', "Car Price in integer is required");
         return false;
     }
 }
@@ -134,6 +133,11 @@ const addOrEditCarData = () => {
             car.id = formData.id;
             carStore.changeCarData(car);
         }
+    } else {
+        validateName()
+        validateImage()
+        validatedetails()
+        validatePrice()
     }
 }
 </script>

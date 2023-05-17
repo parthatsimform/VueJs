@@ -19,60 +19,43 @@
     </div>
 </template>
 
-<script setup>
+<script>
 import { useUserStore } from '../stores/user';
-
-const userStore = useUserStore()
-
-let emailInput = ref(null)
-let passwordInput = ref(null)
-
-onBeforeRouteLeave(() => {
-    userStore.user.email = ''
-    userStore.user.password = ''
-})
-
-const showError = (ref, errDiv, err) => {
-    ref.value.focus();
-    ref.value.style.border = "1px solid red";
-    document.getElementsByClassName(errDiv)[0].innerHTML = err;
-}
-
-const removeError = (ref, errDiv) => {
-    ref.value.style.border = "1px solid rgb(192, 192, 192)";
-    document.getElementsByClassName(errDiv)[0].innerHTML = "";
-}
-
-const validateEmail = () => {
-    const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g
-    if (emailRegex.test(userStore.user.email)) {
-        removeError(emailInput, 'emailError');
-        return true;
-    } else {
-        showError(emailInput, 'emailError', "*Valid Email ID is required")
-        return false;
-    }
-}
-
-const validatePassword = () => {
-    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,12}$/
-    if (passwordRegex.test(userStore.user.password)) {
-        removeError(passwordInput, 'passwordError');
-        return true;
-    } else {
-        showError(passwordInput, 'passwordError', "*Password of length 8-12 is required and must contain at least one numeric digit and a special character")
-        return false;
-    }
-}
-
-const loginUser = async () => {
-    if (validateEmail() && validatePassword()) {
-        userStore.signinUser(userStore.user.email, userStore.user.password);
+import { mapState, mapActions } from 'pinia';
+import userFormMixin from '../mixins/userForm'
+export default {
+    mixins: [userFormMixin],
+    computed: {
+        ...mapState(useUserStore, ['user'])
+    },
+    methods: {
+        ...mapActions(useUserStore, ['signinUser']),
+        loginUser() {
+            if (this.validateEmail() && this.validatePassword()) {
+                this.signinUser(this.user.email, this.user.password);
+            } else {
+                this.validateEmail()
+                this.validatePassword()
+            }
+        }
     }
 }
 </script>
 
-<style scoped>
+<script setup>
+import { useUserStore } from '../stores/user';
+const userStore = useUserStore()
+
+onBeforeRouteLeave((to, from) => {
+    if (to.name == "register") {
+        userStore.user.email = ''
+        userStore.user.password = ''
+    }
+})
+
+</script>
+
+<style>
 .login {
     background-color: white;
     border-radius: 10px;

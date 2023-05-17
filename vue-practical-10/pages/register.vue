@@ -7,21 +7,21 @@
         </div>
         <hr />
         <form class="registerForm" @submit.prevent="registerUser">
-            <label for="name">Name:</label>
+            <label for="name">Name*</label>
             <input type="text" id="name" v-model="userStore.user.name" @input="validateName" ref="nameInput">
             <div class="nameError"></div>
-            <label for="email">Email:</label>
+            <label for="email">Email*</label>
             <input type="text" id="email" v-model="userStore.user.email" @input="validateEmail" ref="emailInput" />
             <div class="emailError"></div>
-            <label for="password">Password:</label>
+            <label for="password">Password*</label>
             <input type="password" id="password" v-model="userStore.user.password" @input="validatePassword"
                 ref="passwordInput" />
             <div class="passwordError"></div>
-            <label for="cPassword">Confirm Password:</label>
+            <label for="cPassword">Confirm Password*</label>
             <input type="password" id="cPassword" v-model="userStore.user.cPassword" @input="validateCPassword"
                 ref="cPasswordInput" />
             <div class="cPasswordError"></div>
-            <label for="role">Role:</label>
+            <label for="role">Role*</label>
             <select name="role" id="role" v-model="userStore.user.role" @change="validateRole" ref="roleInput">
                 <option value="" selected disabled>Select Role</option>
                 <option value="admin">Admin</option>
@@ -30,7 +30,7 @@
             </select>
             <div class="roleError"></div>
             <div class="genderSelect">
-                <label for="gender">Gender:</label>
+                <label for="gender">Gender*</label>
                 <span class="maleRadio">
                     <input type="radio" id="male" value="Male" v-model="userStore.user.gender" @change="validateGender"
                         ref="genderInput" />
@@ -43,10 +43,10 @@
                 </span>
                 <div class="genderError"></div>
             </div>
-            <label for="age">Age:</label>
+            <label for="age">Age*</label>
             <input id="age" v-model="userStore.user.age" @input="validateAge" ref="ageInput" />
             <div class="ageError"></div>
-            <label for="dob">DOB:</label>
+            <label for="dob">DOB*</label>
             <input type="date" id="dob" v-model="userStore.user.dob" @change="validateDOB" ref="dobInput" />
             <div class="dobError"></div>
             <button type="submit" class="submitForm">Register</button>
@@ -54,146 +54,70 @@
     </div>
 </template>
 
+<script>
+import { useUserStore } from '../stores/user'
+import { mapState, mapActions } from 'pinia';
+import userFormMixin from '../mixins/userForm'
+export default {
+    mixins: [userFormMixin],
+    computed: {
+        ...mapState(useUserStore, ['user'])
+    },
+    methods: {
+        ...mapActions(useUserStore, ['signupUser']),
+        validateForm() {
+            if (this.validateName() && this.validateEmail() && this.validatePassword() && this.validateCPassword() && this.validateRole() && this.validateGender() && this.validateAge() && this.validateDOB()) {
+                return true;
+            } else {
+                return false;
+            }
+        },
+        registerUser() {
+            if (this.validateForm()) {
+                const newUser = {
+                    name: this.user.name,
+                    email: this.user.email,
+                    password: this.user.password,
+                    role: this.user.role,
+                    gender: this.user.gender,
+                    age: this.user.age,
+                    dob: this.user.dob
+                }
+                this.signupUser(newUser);
+            } else {
+                this.validateName()
+                this.validateEmail()
+                this.validatePassword()
+                this.validateCPassword()
+                this.validateRole()
+                this.validateGender()
+                this.validateAge()
+                this.validateDOB()
+            }
+        }
+    }
+}
+</script>
+
 <script setup>
 import { useUserStore } from '../stores/user'
+import userFormMixin from '../mixins/userForm'
 
 const userStore = useUserStore()
 
-let nameInput = ref(null)
-let emailInput = ref(null)
-let passwordInput = ref(null)
-let cPasswordInput = ref(null)
-let roleInput = ref(null)
-let genderInput = ref(null)
-let ageInput = ref(null)
-let dobInput = ref(null)
-
-onBeforeRouteLeave(() => {
-    userStore.user.name = ''
-    userStore.user.email = ''
-    userStore.user.password = ''
-    userStore.user.cPassword = ''
-    userStore.user.role = ''
-    userStore.user.gender = ''
-    userStore.user.age = ''
-    userStore.user.dob = ''
+onBeforeRouteLeave((to, from) => {
+    if (to.name == "login") {
+        userStore.user.name = ''
+        userStore.user.email = ''
+        userStore.user.password = ''
+        userStore.user.cPassword = ''
+        userStore.user.role = ''
+        userStore.user.gender = ''
+        userStore.user.age = ''
+        userStore.user.dob = ''
+    }
 })
 
-const showError = (ref, errDiv, err) => {
-    ref.value.focus();
-    ref.value.style.border = "1px solid red";
-    document.getElementsByClassName(errDiv)[0].innerHTML = err;
-}
-
-const removeError = (ref, errDiv) => {
-    ref.value.style.border = "1px solid rgb(192, 192, 192)";
-    document.getElementsByClassName(errDiv)[0].innerHTML = "";
-}
-
-const validateName = () => {
-    if (userStore.user.name === "") {
-        showError(nameInput, 'nameError', "*User name is required")
-        return false;
-    } else {
-        removeError(nameInput, 'nameError');
-        return true;
-    }
-}
-
-const validateEmail = () => {
-    const emailRegex = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g
-    if (emailRegex.test(userStore.user.email)) {
-        removeError(emailInput, 'emailError');
-        return true;
-    } else {
-        showError(emailInput, 'emailError', "*Valid Email ID is required")
-        return false;
-    }
-}
-
-const validatePassword = () => {
-    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,12}$/
-    if (passwordRegex.test(userStore.user.password)) {
-        removeError(passwordInput, 'passwordError');
-        return true;
-    } else {
-        showError(passwordInput, 'passwordError', "*Password of length 8-12 is required and must contain at least one numeric digit and a special character")
-        return false;
-    }
-}
-
-const validateCPassword = () => {
-    if (userStore.user.cPassword !== userStore.user.password) {
-        showError(cPasswordInput, 'cPasswordError', "*Confirm password doesn't match with password")
-        return false;
-    } else {
-        removeError(cPasswordInput, 'cPasswordError');
-        return true;
-    }
-}
-
-const validateRole = () => {
-    if (userStore.user.role === "") {
-        showError(roleInput, 'roleError', "*Please select a role")
-        return false;
-    } else {
-        removeError(roleInput, 'roleError');
-        return true;
-    }
-}
-
-const validateGender = () => {
-    if (userStore.user.gender === "") {
-        showError(genderInput, 'genderError', "*Please select a gender")
-        return false;
-    } else {
-        removeError(genderInput, 'genderError');
-        return true;
-    }
-}
-
-const validateAge = () => {
-    if (userStore.user.age !== "" && Number.isInteger(Number(userStore.user.age))) {
-        removeError(ageInput, 'ageError');
-        return true;
-    } else {
-        showError(ageInput, 'ageError', "*Age must be in integer required");
-        return false;
-    }
-}
-
-const validateDOB = () => {
-    if (userStore.user.dob === "") {
-        showError(dobInput, 'dobError', "*Please select your DOB")
-        return false;
-    } else {
-        removeError(dobInput, 'dobError');
-        return true;
-    }
-}
-
-const validateForm = () => {
-    if (validateName() && validateEmail() && validatePassword() && validateCPassword() && validateRole() && validateGender() && validateAge() && validateDOB()) {
-        return true;
-    } else {
-        return false;
-    }
-}
-
-const registerUser = () => {
-    if (validateForm()) {
-        const newUser = {
-            name: userStore.user.name,
-            email: userStore.user.email,
-            password: userStore.user.password,
-            role: userStore.user.role,
-            gender: userStore.user.gender,
-            age: userStore.user.age,
-            dob: userStore.user.dob
-        }
-        userStore.signupUser(newUser);
-    }
-}
 </script>
 
 <style scoped>

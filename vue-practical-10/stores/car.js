@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import Axios from "axios";
+import useFetchCars from "~/composables/useFetchCars";
 
 export const useCarStore = defineStore("car", {
 	state: () => ({
@@ -20,17 +21,8 @@ export const useCarStore = defineStore("car", {
 	},
 	actions: {
 		async getCars() {
-			if (process.client) {
-				const res = await Axios.get(import.meta.env.VITE_CAR_URL, {
-					headers: {
-						Authorization: `Bearer ${localStorage.getItem(
-							"token"
-						)}`,
-					},
-				});
-				const data = await res.data.data;
-				this.cars = data;
-			}
+			const data = await useFetchCars();
+			this.cars = await data.data.value;
 		},
 		async getCar() {
 			try {
@@ -45,6 +37,7 @@ export const useCarStore = defineStore("car", {
 							},
 						}
 					);
+					console.log(res);
 					const data = await res.data;
 					this.car = data;
 				}
