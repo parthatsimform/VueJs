@@ -36,7 +36,14 @@ import { useCarStore } from "../../stores/car.js"
 const carStore = useCarStore()
 const route = useRoute()
 carStore.carID = route.params.id
-carStore.getCar()
+const { data, error } = await useFetchCar(carStore.carID)
+if (error.value) {
+    throw createError({
+        statusCode: 404,
+        statusMessage: `Car with id:${carStore.carID} not found`,
+    });
+}
+carStore.car = data.value;
 </script>
 
 <style scoped>

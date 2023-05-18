@@ -1,13 +1,17 @@
 import Axios from "axios";
 export default defineEventHandler(async (event) => {
+	const id = await readBody(event);
 	let headers = {};
-	let data = {};
 	if (process.client) {
 		headers.Authorization = `Bearer ${window.localStorage.getItem(
 			"token"
 		)}`;
 	}
-	const res = await Axios.get(import.meta.env.VITE_CAR_URL, { headers });
-	data = await res.data.data;
-	return data;
+	const res = await Axios.delete(`${import.meta.env.VITE_CAR_URL}/${id}`, {
+		headers,
+	});
+	if (res.status === 204) {
+		return true;
+	}
+	return false;
 });

@@ -30,9 +30,18 @@ export default {
     },
     methods: {
         ...mapActions(useUserStore, ['signinUser']),
-        loginUser() {
+        async loginUser() {
             if (this.validateEmail() && this.validatePassword()) {
-                this.signinUser(this.user.email, this.user.password);
+                const user = await useLoginUser(this.user.email, this.user.password)
+                if (user) {
+                    this.isLoggedIn = true;
+                    localStorage.setItem("isLoggedIn", true);
+                    localStorage.setItem("token", `ThisIsRandomKey`);
+                    navigateTo("/");
+                } else {
+                    alert("User not found")
+                    this.user.password = ""
+                }
             } else {
                 this.validateEmail()
                 this.validatePassword()
@@ -47,10 +56,8 @@ import { useUserStore } from '../stores/user';
 const userStore = useUserStore()
 
 onBeforeRouteLeave((to, from) => {
-    if (to.name == "register") {
-        userStore.user.email = ''
-        userStore.user.password = ''
-    }
+    userStore.user.email = ''
+    userStore.user.password = ''
 })
 
 </script>

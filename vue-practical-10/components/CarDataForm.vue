@@ -118,7 +118,7 @@ const validatePrice = () => {
     }
 }
 
-const addOrEditCarData = () => {
+const addOrEditCarData = async () => {
     if (validateName() && validateImage() && validatedetails() && validatePrice()) {
         const car = {
             name: formData.name,
@@ -127,11 +127,27 @@ const addOrEditCarData = () => {
             price: formData.price,
         }
         if (carStore.title == "Add Car") {
-            carStore.newCarData(car);
+            const status = await useAddCar(car)
+            if (status) {
+                const { data, error } = await useFetchCars();
+                if (error.value) {
+                    throw createError(error);
+                }
+                carStore.cars = data.value
+                closePopup()
+            }
         }
         if (carStore.title == "Edit Car") {
             car.id = formData.id;
-            carStore.changeCarData(car);
+            const status = await useEditCar(car)
+            if (status) {
+                const { data, error } = await useFetchCars();
+                if (error.value) {
+                    throw createError(error);
+                }
+                carStore.cars = data.value
+                closePopup()
+            }
         }
     } else {
         validateName()

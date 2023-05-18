@@ -72,7 +72,7 @@ export default {
                 return false;
             }
         },
-        registerUser() {
+        async registerUser() {
             if (this.validateForm()) {
                 const newUser = {
                     name: this.user.name,
@@ -83,7 +83,14 @@ export default {
                     age: this.user.age,
                     dob: this.user.dob
                 }
-                this.signupUser(newUser);
+                // this.signupUser(newUser);
+                const user = await useRegisterUser(newUser);
+                if (user) {
+                    this.isLoggedIn = true;
+                    localStorage.setItem("isLoggedIn", true);
+                    localStorage.setItem("token", `ThisIsRandomKey`);
+                    navigateTo("/");
+                }
             } else {
                 this.validateName()
                 this.validateEmail()
@@ -106,16 +113,14 @@ import userFormMixin from '../mixins/userForm'
 const userStore = useUserStore()
 
 onBeforeRouteLeave((to, from) => {
-    if (to.name == "login") {
-        userStore.user.name = ''
-        userStore.user.email = ''
-        userStore.user.password = ''
-        userStore.user.cPassword = ''
-        userStore.user.role = ''
-        userStore.user.gender = ''
-        userStore.user.age = ''
-        userStore.user.dob = ''
-    }
+    userStore.user.name = ''
+    userStore.user.email = ''
+    userStore.user.password = ''
+    userStore.user.cPassword = ''
+    userStore.user.role = ''
+    userStore.user.gender = ''
+    userStore.user.age = ''
+    userStore.user.dob = ''
 })
 
 </script>

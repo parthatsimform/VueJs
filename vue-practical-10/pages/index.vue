@@ -5,7 +5,7 @@
         </Transition>
         <div id="homeComponent" :class="{ fadeBG: carStore.togglePopup }">
             <div id="addCar">
-                <button class="addCarBtn" @click.prevent.stop="carStore.showCarForm">+ Add Car</button>
+                <button class="addCarBtn" @click.prevent.stop="showCarForm">+ Add Car</button>
             </div>
             <div id="carComponent">
                 <TransitionGroup name="carCard" appear>
@@ -24,7 +24,16 @@ definePageMeta({
 })
 import { useCarStore } from '../stores/car'
 const carStore = useCarStore()
-await carStore.getCars();
+const { data, error } = await useFetchCars();
+if (error.value) {
+    throw createError(error);
+}
+carStore.cars = data.value
+
+const showCarForm = () => {
+    carStore.togglePopup = true
+    carStore.title = "Add Car"
+}
 </script>
 
 <style>
