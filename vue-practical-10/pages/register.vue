@@ -64,7 +64,6 @@ export default {
         ...mapState(useUserStore, ['user'])
     },
     methods: {
-        ...mapActions(useUserStore, ['signupUser']),
         validateForm() {
             if (this.validateName() && this.validateEmail() && this.validatePassword() && this.validateCPassword() && this.validateRole() && this.validateGender() && this.validateAge() && this.validateDOB()) {
                 return true;

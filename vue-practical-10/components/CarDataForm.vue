@@ -74,10 +74,6 @@ const removeError = (ref, errDiv) => {
     document.getElementsByClassName(errDiv)[0].innerHTML = "";
 }
 
-const closePopup = () => {
-    carStore.togglePopup = false;
-}
-
 const validateName = () => {
     if (formData.name === "") {
         showError(nameInput, 'nameError', "Car name is required")
@@ -129,24 +125,14 @@ const addOrEditCarData = async () => {
         if (carStore.title == "Add Car") {
             const status = await useAddCar(car)
             if (status) {
-                const { data, error } = await useFetchCars();
-                if (error.value) {
-                    throw createError(error);
-                }
-                carStore.cars = data.value
-                closePopup()
+                showUpdatedCars()
             }
         }
         if (carStore.title == "Edit Car") {
             car.id = formData.id;
             const status = await useEditCar(car)
             if (status) {
-                const { data, error } = await useFetchCars();
-                if (error.value) {
-                    throw createError(error);
-                }
-                carStore.cars = data.value
-                closePopup()
+                showUpdatedCars()
             }
         }
     } else {
@@ -155,6 +141,15 @@ const addOrEditCarData = async () => {
         validatedetails()
         validatePrice()
     }
+}
+
+const showUpdatedCars = async () => {
+    const { data, error } = await useFetchCars();
+    if (error.value) {
+        throw createError(error);
+    }
+    carStore.cars = data.value
+    carStore.togglePopup = false;
 }
 </script>
 

@@ -29,7 +29,6 @@ export default {
         ...mapState(useUserStore, ['user'])
     },
     methods: {
-        ...mapActions(useUserStore, ['signinUser']),
         async loginUser() {
             if (this.validateEmail() && this.validatePassword()) {
                 const user = await useLoginUser(this.user.email, this.user.password)
