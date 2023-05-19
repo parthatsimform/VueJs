@@ -6,7 +6,12 @@ export const useCarStore = defineStore("car", {
 		title: "",
 		editableCar: {},
 		cars: [],
-		car: {},
+		car: {
+			name: "",
+			image: "",
+			details: "",
+			price: "",
+		},
 		carID: "",
 	}),
 	getters: {

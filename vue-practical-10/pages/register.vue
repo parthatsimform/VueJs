@@ -8,21 +8,23 @@
         <hr />
         <form class="registerForm" @submit.prevent="registerUser">
             <label for="name">Name*</label>
-            <input type="text" id="name" v-model="userStore.user.name" @input="validateName" ref="nameInput">
+            <input type="text" id="name" v-model="user.name" @input="validate(user.name, 'name', 'User name is required')"
+                ref="nameInput">
             <div class="nameError"></div>
             <label for="email">Email*</label>
-            <input type="text" id="email" v-model="userStore.user.email" @input="validateEmail" ref="emailInput" />
+            <input type="text" id="email" v-model="user.email" @input="validateEmail(user.email)" ref="emailInput" />
             <div class="emailError"></div>
             <label for="password">Password*</label>
-            <input type="password" id="password" v-model="userStore.user.password" @input="validatePassword"
+            <input type="password" id="password" v-model="user.password" @input="validatePassword(user.password)"
                 ref="passwordInput" />
             <div class="passwordError"></div>
             <label for="cPassword">Confirm Password*</label>
-            <input type="password" id="cPassword" v-model="userStore.user.cPassword" @input="validateCPassword"
-                ref="cPasswordInput" />
+            <input type="password" id="cPassword" v-model="user.cPassword"
+                @input="validateCPassword(user.cPassword, user.password)" ref="cPasswordInput" />
             <div class="cPasswordError"></div>
             <label for="role">Role*</label>
-            <select name="role" id="role" v-model="userStore.user.role" @change="validateRole" ref="roleInput">
+            <select name="role" id="role" v-model="user.role" @change="validate(user.role, 'role', 'Please select a role')"
+                ref="roleInput">
                 <option value="" selected disabled>Select Role</option>
                 <option value="admin">Admin</option>
                 <option value="employee">Employee</option>
@@ -32,22 +34,22 @@
             <div class="genderSelect">
                 <label for="gender">Gender*</label>
                 <span class="maleRadio">
-                    <input type="radio" id="male" value="Male" v-model="userStore.user.gender" @change="validateGender"
-                        ref="genderInput" />
+                    <input type="radio" id="male" value="Male" v-model="user.gender"
+                        @change="validate(user.gender, 'gender', 'Please select a gender')" ref="genderInput" />
                     <label for="male">Male</label>
                 </span>
                 <span class="femaleRadio">
-                    <input type="radio" id="female" value="Female" v-model="userStore.user.gender" @change="validateGender"
-                        ref="genderInput" />
+                    <input type="radio" id="female" value="Female" v-model="user.gender"
+                        @change="validate(user.gender, 'gender', 'Please select a gender')" ref="genderInput" />
                     <label for="female">Female</label>
                 </span>
                 <div class="genderError"></div>
             </div>
             <label for="age">Age*</label>
-            <input id="age" v-model="userStore.user.age" @input="validateAge" ref="ageInput" />
+            <input id="age" v-model="user.age" @input="validateAge(user.age)" ref="ageInput" />
             <div class="ageError"></div>
             <label for="dob">DOB*</label>
-            <input type="date" id="dob" v-model="userStore.user.dob" @change="validateDOB" ref="dobInput" />
+            <input type="date" id="dob" v-model="user.dob" @change="validateDOB(user.dob)" ref="dobInput" />
             <div class="dobError"></div>
             <button type="submit" class="submitForm">Register</button>
         </form>
@@ -56,12 +58,12 @@
 
 <script>
 import { useUserStore } from '../stores/user'
-import { mapState, mapActions } from 'pinia';
-import userFormMixin from '../mixins/userForm'
+import { mapWritableState } from 'pinia';
+import formValidateMixin from '../mixins/formValidation'
 export default {
-    mixins: [userFormMixin],
+    mixins: [formValidateMixin],
     computed: {
-        ...mapState(useUserStore, ['user'])
+        ...mapWritableState(useUserStore, ['user'])
     },
     methods: {
         validateForm() {
@@ -101,27 +103,21 @@ export default {
                 this.validateDOB()
             }
         }
+    },
+    setup() {
+        const userStore = useUserStore()
+        onBeforeRouteLeave((to, from) => {
+            userStore.user.name = ''
+            userStore.user.email = ''
+            userStore.user.password = ''
+            userStore.user.cPassword = ''
+            userStore.user.role = ''
+            userStore.user.gender = ''
+            userStore.user.age = ''
+            userStore.user.dob = ''
+        })
     }
 }
-</script>
-
-<script setup>
-import { useUserStore } from '../stores/user'
-import userFormMixin from '../mixins/userForm'
-
-const userStore = useUserStore()
-
-onBeforeRouteLeave((to, from) => {
-    userStore.user.name = ''
-    userStore.user.email = ''
-    userStore.user.password = ''
-    userStore.user.cPassword = ''
-    userStore.user.role = ''
-    userStore.user.gender = ''
-    userStore.user.age = ''
-    userStore.user.dob = ''
-})
-
 </script>
 
 <style scoped>

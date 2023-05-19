@@ -3,7 +3,7 @@
         <div class="carData">
             <div class="formHeader">
                 <div class="formTitle">
-                    <h2>{{ carStore.title }}</h2>
+                    <h2>{{ title }}</h2>
                 </div>
                 <div class="closePopup" @click="closePopup">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512">
@@ -16,17 +16,17 @@
             <hr />
             <form class="carForm" @submit.prevent="addOrEditCarData">
                 <label for="carName">Car Name*</label>
-                <input id="carName" v-model="formData.name" @input="validateName" ref="nameInput" />
-                <div class="nameError"></div>
+                <input id="carName" v-model="car.name" @input="validateCarName" ref="carNameInput" />
+                <div class="carNameError"></div>
                 <label for="carImage">Car Image*</label>
-                <input id="carImage" v-model="formData.image" @input="validateImage" ref="imageInput" />
+                <input id="carImage" v-model="car.image" @input="validateImage" ref="imageInput" />
                 <div class="imageError"></div>
                 <label for="cardetails">Details*</label>
-                <textarea id="cardetails" cols="30" rows="4" v-model="formData.details" @change="validatedetails"
+                <textarea id="cardetails" cols="30" rows="4" v-model="car.details" @change="validatedetails"
                     ref="detailsInput" />
                 <div class="detailsError"></div>
                 <label for="carPrice">Car Price(₹)*</label>
-                <input id="carPrice" v-model="formData.price" @input="validatePrice" ref="priceInput" />
+                <input id="carPrice" v-model="car.price" @input="validatePrice" ref="priceInput" />
                 <div class="priceError"></div>
                 <button type="submit" id="submitForm">Submit</button>
             </form>
@@ -34,124 +34,85 @@
     </div>
 </template>
 
-<script setup>
+<script>
 import { useCarStore } from '../stores/car'
-const carStore = useCarStore()
-let nameInput = ref(null)
-let imageInput = ref(null)
-let detailsInput = ref(null)
-let priceInput = ref(null)
-
-const formData = reactive({
-    id: null,
-    name: '',
-    image: '',
-    details: '',
-    price: ''
-})
-
-if (carStore.title == "Edit Car") {
-    formData.id = carStore.editableCar.id
-    formData.name = carStore.editableCar.name
-    formData.image = carStore.editableCar.image
-    formData.details = carStore.editableCar.details
-    formData.price = carStore.editableCar.price
-}
-
-const urlChacker = () => {
-    const urlPattern = /^((https?:)?\/\/)?[^\s]+\.(jpe?g|png|gif|bmp|webp)(\?\S*)?$/i;
-    return urlPattern.test(formData.image);
-}
-
-const showError = (ref, errDiv, err) => {
-    ref.value.focus();
-    ref.value.style.border = "1px solid red";
-    document.getElementsByClassName(errDiv)[0].innerHTML = err;
-}
-
-const removeError = (ref, errDiv) => {
-    ref.value.style.border = "1px solid rgb(192, 192, 192)";
-    document.getElementsByClassName(errDiv)[0].innerHTML = "";
-}
-
-const validateName = () => {
-    if (formData.name === "") {
-        showError(nameInput, 'nameError', "Car name is required")
-        return false;
-    } else {
-        removeError(nameInput, 'nameError');
-        return true;
-    }
-}
-
-const validateImage = () => {
-    if (!urlChacker()) {
-        showError(imageInput, 'imageError', "Please enter a valid image URL");
-        return false;
-    } else {
-        removeError(imageInput, 'imageError');
-        return true;
-    }
-}
-
-const validatedetails = () => {
-    if (formData.details === "" || formData.details.length < 30 || formData.details.length > 120) {
-        showError(detailsInput, 'detailsError', "Car detail in limit of 30 to 120 characters is required");
-        return false;
-    } else {
-        removeError(detailsInput, 'detailsError');
-        return true;
-    }
-}
-
-const validatePrice = () => {
-    if (formData.price !== "" && Number.isInteger(Number(formData.price))) {
-        removeError(priceInput, 'priceError');
-        return true;
-    } else {
-        showError(priceInput, 'priceError', "Car Price in integer is required");
-        return false;
-    }
-}
-
-const addOrEditCarData = async () => {
-    if (validateName() && validateImage() && validatedetails() && validatePrice()) {
-        const car = {
-            name: formData.name,
-            image: formData.image,
-            details: formData.details,
-            price: formData.price,
-        }
-        if (carStore.title == "Add Car") {
-            const status = await useAddCar(car)
-            if (status) {
-                showUpdatedCars()
+import { mapState, mapWritableState } from 'pinia';
+import formValidateMixin from '../mixins/formValidation'
+export default {
+    mixins: [formValidateMixin],
+    computed: {
+        ...mapState(useCarStore, ['car', 'title', 'editableCar']),
+        ...mapWritableState(useCarStore, ['cars', 'togglePopup'])
+    },
+    methods: {
+        async showUpdatedCars() {
+            const { data, error } = await useFetchCars();
+            if (error.value) {
+                throw createError(error);
             }
-        }
-        if (carStore.title == "Edit Car") {
-            car.id = formData.id;
-            const status = await useEditCar(car)
-            if (status) {
-                showUpdatedCars()
+            this.cars = data.value
+            this.closePopup()
+        },
+        async addOrEditCarData() {
+            if (this.validateCarName() && this.validateImage() && this.validatedetails() && this.validatePrice()) {
+                const carData = {
+                    name: this.car.name,
+                    image: this.car.image,
+                    details: this.car.details,
+                    price: this.car.price,
+                }
+                if (this.title == "Add Car") {
+                    const status = await useAddCar(carData)
+                    if (status) {
+                        this.showUpdatedCars()
+                    }
+                }
+                if (this.title == "Edit Car") {
+                    carData.id = this.car.id;
+                    const status = await useEditCar(carData)
+                    if (status) {
+                        this.showUpdatedCars()
+                    }
+                }
+            } else {
+                this.validateCarName()
+                this.validateImage()
+                this.validatedetails()
+                this.validatePrice()
             }
+        },
+        closePopup() {
+            this.togglePopup = false
+            this.car.name = ""
+            this.car.image = ""
+            this.car.details = ""
+            this.car.price = ""
         }
-    } else {
-        validateName()
-        validateImage()
-        validatedetails()
-        validatePrice()
+    },
+    mounted() {
+        if (this.title == "Edit Car") {
+            this.car.id = this.editableCar.id
+            this.car.name = this.editableCar.name
+            this.car.image = this.editableCar.image
+            this.car.details = this.editableCar.details
+            this.car.price = this.editableCar.price
+        }
     }
-}
-
-const showUpdatedCars = async () => {
-    const { data, error } = await useFetchCars();
-    if (error.value) {
-        throw createError(error);
-    }
-    carStore.cars = data.value
-    carStore.togglePopup = false;
 }
 </script>
+
+<!-- <script setup>
+import { useCarStore } from '../stores/car'
+const carStore = useCarStore()
+
+if (carStore.title == "Edit Car") {
+    carStore.car.id = carStore.editableCar.id
+    carStore.car.name = carStore.editableCar.name
+    carStore.car.image = carStore.editableCar.image
+    carStore.car.details = carStore.editableCar.details
+    carStore.car.price = carStore.editableCar.price
+}
+</script> -->
 
 <style scoped>
 .carPopup {
@@ -234,7 +195,7 @@ input[type=number] {
     -moz-appearance: textfield;
 }
 
-.nameError,
+.carNameError,
 .imageError,
 .detailsError,
 .priceError {

@@ -8,11 +8,10 @@
         <hr />
         <form class="loginForm" @submit.prevent="loginUser">
             <label for="email">Email:</label>
-            <input type="text" id="email" v-model="userStore.user.email" @input="validateEmail" ref="emailInput" />
+            <input type="text" id="email" v-model="user.email" @input="validateEmail" ref="emailInput" />
             <div class="emailError"></div>
             <label for="password">Password:</label>
-            <input type="password" id="password" v-model="userStore.user.password" @input="validatePassword"
-                ref="passwordInput" />
+            <input type="password" id="password" v-model="user.password" @input="validatePassword" ref="passwordInput" />
             <div class="passwordError"></div>
             <button type="submit" class="submitForm">Login</button>
         </form>
@@ -21,12 +20,12 @@
 
 <script>
 import { useUserStore } from '../stores/user';
-import { mapState, mapActions } from 'pinia';
-import userFormMixin from '../mixins/userForm'
+import { mapWritableState } from 'pinia';
+import formValidateMixin from '../mixins/formValidation'
 export default {
-    mixins: [userFormMixin],
+    mixins: [formValidateMixin],
     computed: {
-        ...mapState(useUserStore, ['user'])
+        ...mapWritableState(useUserStore, ['user'])
     },
     methods: {
         async loginUser() {
@@ -46,19 +45,15 @@ export default {
                 this.validatePassword()
             }
         }
+    },
+    setup() {
+        const userStore = useUserStore()
+        onBeforeRouteLeave((to, from) => {
+            userStore.user.email = ''
+            userStore.user.password = ''
+        })
     }
 }
-</script>
-
-<script setup>
-import { useUserStore } from '../stores/user';
-const userStore = useUserStore()
-
-onBeforeRouteLeave((to, from) => {
-    userStore.user.email = ''
-    userStore.user.password = ''
-})
-
 </script>
 
 <style>
