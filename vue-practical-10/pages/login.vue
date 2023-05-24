@@ -8,10 +8,11 @@
         <hr />
         <form class="loginForm" @submit.prevent="loginUser">
             <label for="email">Email:</label>
-            <input type="text" id="email" v-model="user.email" @input="validateEmail" ref="emailInput" />
+            <input type="text" id="email" v-model="user.email" @input="validateEmail(user.email)" ref="emailInput" />
             <div class="emailError"></div>
             <label for="password">Password:</label>
-            <input type="password" id="password" v-model="user.password" @input="validatePassword" ref="passwordInput" />
+            <input type="password" id="password" v-model="user.password" @input="validatePassword(user.password)"
+                ref="passwordInput" />
             <div class="passwordError"></div>
             <button type="submit" class="submitForm">Login</button>
         </form>
@@ -29,7 +30,7 @@ export default {
     },
     methods: {
         async loginUser() {
-            if (this.validateEmail() && this.validatePassword()) {
+            if (this.validateEmail(this.user.email) && this.validatePassword(this.user.password)) {
                 const user = await useLoginUser(this.user.email, this.user.password)
                 if (user) {
                     this.isLoggedIn = true;
@@ -41,8 +42,8 @@ export default {
                     this.user.password = ""
                 }
             } else {
-                this.validateEmail()
-                this.validatePassword()
+                this.validateEmail(this.user.email)
+                this.validatePassword(this.user.password)
             }
         }
     },

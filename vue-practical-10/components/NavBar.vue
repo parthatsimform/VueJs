@@ -4,17 +4,17 @@
             <div class="navContent">
                 <h1>
                     <NuxtLink to="/" exact-active-class="no-active" class="navBarBrand">
-                        <span>Car Gallery</span>
+                        <span>{{ $t('brand') }}</span>
                     </NuxtLink>
                 </h1>
                 <div class="navBtns">
                     <template v-if="!userStore.isLoggedIn">
-                        <NuxtLink to="/login" class="navBtn">Login</NuxtLink>
-                        <NuxtLink to="/register" class="navBtn">Register</NuxtLink>
+                        <NuxtLink to="/login" class="navBtn">{{ $t('login') }}</NuxtLink>
+                        <NuxtLink to="/register" class="navBtn">{{ $t('register') }}</NuxtLink>
                     </template>
                     <template v-else>
-                        <NuxtLink to="/" class="navBtn">Home</NuxtLink>
-                        <NuxtLink to="/login" class="navBtn" @click="userStore.logOut">LogOut</NuxtLink>
+                        <NuxtLink to="/" class="navBtn">{{ $t('home') }}</NuxtLink>
+                        <NuxtLink to="/login" class="navBtn" @click="userStore.logOut">{{ $t('logout') }}</NuxtLink>
                     </template>
                 </div>
             </div>

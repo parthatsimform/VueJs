@@ -67,7 +67,7 @@ export default {
     },
     methods: {
         validateForm() {
-            if (this.validateName() && this.validateEmail() && this.validatePassword() && this.validateCPassword() && this.validateRole() && this.validateGender() && this.validateAge() && this.validateDOB()) {
+            if (this.validateName(this.user.name) && this.validateEmail(this.user.email) && this.validatePassword(this.user.password) && this.validateCPassword(this.user.cPassword, this.user.password) && this.validateRole(this.user.role) && this.validateGender(this.user.gender) && this.validateAge(this.user.age) && this.validateDOB(this.user.dob)) {
                 return true;
             } else {
                 return false;
@@ -93,20 +93,20 @@ export default {
                     navigateTo("/");
                 }
             } else {
-                this.validateName()
-                this.validateEmail()
-                this.validatePassword()
-                this.validateCPassword()
-                this.validateRole()
-                this.validateGender()
-                this.validateAge()
-                this.validateDOB()
+                this.validateName(this.user.name)
+                this.validateEmail(this.user.email)
+                this.validatePassword(this.user.password)
+                this.validateCPassword(this.user.cPassword, this.user.password)
+                this.validateRole(this.user.role)
+                this.validateGender(this.user.gender)
+                this.validateAge(this.user.age)
+                this.validateDOB(this.user.dob)
             }
         }
     },
     setup() {
         const userStore = useUserStore()
-        onBeforeRouteLeave((to, from) => {
+        const clearForm = () => {
             userStore.user.name = ''
             userStore.user.email = ''
             userStore.user.password = ''
@@ -115,6 +115,12 @@ export default {
             userStore.user.gender = ''
             userStore.user.age = ''
             userStore.user.dob = ''
+        }
+        onMounted(() => {
+            clearForm()
+        })
+        onBeforeRouteLeave((to, from) => {
+            clearForm()
         })
     }
 }

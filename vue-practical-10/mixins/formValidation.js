@@ -20,8 +20,8 @@ export default {
 				return true;
 			}
 		},
-		validateName() {
-			if (this.user.name === "") {
+		validateName(name) {
+			if (name === "") {
 				useShowError(
 					this.$refs.nameInput,
 					"nameError",
@@ -75,8 +75,8 @@ export default {
 				return true;
 			}
 		},
-		validateRole() {
-			if (this.user.role === "") {
+		validateRole(role) {
+			if (role === "") {
 				useShowError(
 					this.$refs.roleInput,
 					"roleError",
@@ -88,8 +88,8 @@ export default {
 				return true;
 			}
 		},
-		validateGender() {
-			if (this.user.gender === "") {
+		validateGender(gender) {
+			if (gender === "") {
 				useShowError(
 					this.$refs.genderInput,
 					"genderError",

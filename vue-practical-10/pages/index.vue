@@ -5,7 +5,7 @@
         </Transition>
         <div id="homeComponent" :class="{ fadeBG: carStore.togglePopup }">
             <div id="addCar">
-                <button class="addCarBtn" @click.prevent.stop="showCarForm">+ Add Car</button>
+                <button class="addCarBtn" @click.prevent.stop="showCarForm">+ {{ $t('caradd') }}</button>
             </div>
             <div id="carComponent">
                 <TransitionGroup name="carCard" appear>
@@ -14,6 +14,16 @@
                     </div>
                 </TransitionGroup>
             </div>
+        </div>
+        <div class="language">
+            <form>
+                <select v-model="$i18n.locale" class="langSelect">
+                    <option value="en">en</option>
+                    <option value="fr">fr</option>
+                    <option value="gu">gu</option>
+                    <option value="hi">hi</option>
+                </select>
+            </form>
         </div>
     </div>
 </template>
@@ -122,6 +132,34 @@ body::before {
     flex-wrap: wrap;
     justify-content: center;
     text-align: center;
+}
+
+.language {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+}
+
+.langSelect {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    padding: 5px;
+    background-color: green;
+    border: 1px solid white;
+    color: white;
+    font-size: 16px;
+    transition: all 0.2s linear;
+}
+
+.langSelect:hover {
+    background-color: white;
+    border: 1px solid green;
+    color: black;
+    border-radius: 0;
+    width: 100px;
+    height: 40px;
+    transition: all 0.2s linear;
 }
 
 .fadeBG {
