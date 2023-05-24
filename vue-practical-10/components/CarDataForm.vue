@@ -62,14 +62,20 @@ export default {
                     price: this.car.price,
                 }
                 if (this.title == "Add Car") {
-                    const status = await useAddCar(carData)
+                    const { added: status, error } = await useAddCar(carData)
+                    if (error.value) {
+                        return alert("Error code: " + error.value.statusCode + " - " + error.value.statusMessage)
+                    }
                     if (status) {
                         this.showUpdatedCars()
                     }
                 }
                 if (this.title == "Edit Car") {
                     carData.id = this.car.id;
-                    const status = await useEditCar(carData)
+                    const { edited: status, error } = await useEditCar(carData)
+                    if (error.value) {
+                        return alert("Error code: " + error.value.statusCode + " - " + error.value.statusMessage)
+                    }
                     if (status) {
                         this.showUpdatedCars()
                     }
@@ -100,19 +106,6 @@ export default {
     }
 }
 </script>
-
-<!-- <script setup>
-import { useCarStore } from '../stores/car'
-const carStore = useCarStore()
-
-if (carStore.title == "Edit Car") {
-    carStore.car.id = carStore.editableCar.id
-    carStore.car.name = carStore.editableCar.name
-    carStore.car.image = carStore.editableCar.image
-    carStore.car.details = carStore.editableCar.details
-    carStore.car.price = carStore.editableCar.price
-}
-</script> -->
 
 <style scoped>
 .carPopup {

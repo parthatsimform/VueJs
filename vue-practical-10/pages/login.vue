@@ -1,21 +1,26 @@
 <template>
-    <div class="login">
-        <div class="formHeader">
-            <h2 class="formTitle">
-                Login
-            </h2>
-        </div>
-        <hr />
-        <form class="loginForm" @submit.prevent="loginUser">
-            <label for="email">Email:</label>
-            <input type="text" id="email" v-model="user.email" @input="validateEmail(user.email)" ref="emailInput" />
-            <div class="emailError"></div>
-            <label for="password">Password:</label>
-            <input type="password" id="password" v-model="user.password" @input="validatePassword(user.password)"
-                ref="passwordInput" />
-            <div class="passwordError"></div>
-            <button type="submit" class="submitForm">Login</button>
-        </form>
+    <div>
+        <no-ssr>
+            <div class="login">
+                <div class="formHeader">
+                    <h2 class="formTitle">
+                        Login
+                    </h2>
+                </div>
+                <hr />
+                <form class="loginForm" @submit.prevent="loginUser">
+                    <label for="email">Email:</label>
+                    <input type="text" id="email" v-model="user.email" @input="validateEmail(user.email)"
+                        ref="emailInput" />
+                    <div class="emailError"></div>
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" v-model="user.password" @input="validatePassword(user.password)"
+                        ref="passwordInput" />
+                    <div class="passwordError"></div>
+                    <button type="submit" class="submitForm">Login</button>
+                </form>
+            </div>
+        </no-ssr>
     </div>
 </template>
 

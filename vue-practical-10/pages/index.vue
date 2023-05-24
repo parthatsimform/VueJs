@@ -1,29 +1,33 @@
 <template>
     <div>
-        <Transition name="form" mode="out-in">
-            <CarDataForm v-if="carStore.togglePopup" />
-        </Transition>
-        <div id="homeComponent" :class="{ fadeBG: carStore.togglePopup }">
-            <div id="addCar">
-                <button class="addCarBtn" @click.prevent.stop="showCarForm">+ {{ $t('caradd') }}</button>
-            </div>
-            <div id="carComponent">
-                <TransitionGroup name="carCard" appear>
-                    <div v-for="car in carStore.loadAllCars" :key="car.id">
-                        <GalleryCard :car="car" />
-                    </div>
-                </TransitionGroup>
-            </div>
+        <div v-if="userStore.loading" class="loader">
         </div>
-        <div class="language">
-            <form>
-                <select v-model="$i18n.locale" class="langSelect">
-                    <option value="en">en</option>
-                    <option value="fr">fr</option>
-                    <option value="gu">gu</option>
-                    <option value="hi">hi</option>
-                </select>
-            </form>
+        <div v-if="!userStore.loading">
+            <Transition name="form" mode="out-in">
+                <CarDataForm v-if="carStore.togglePopup" />
+            </Transition>
+            <div id="homeComponent" :class="{ fadeBG: carStore.togglePopup }">
+                <div id="addCar">
+                    <button class="addCarBtn" @click.prevent.stop="showCarForm">+ {{ $t('caradd') }}</button>
+                </div>
+                <div id="carComponent">
+                    <TransitionGroup name="carCard" appear>
+                        <div v-for="car in carStore.loadAllCars" :key="car.id">
+                            <GalleryCard :car="car" />
+                        </div>
+                    </TransitionGroup>
+                </div>
+            </div>
+            <div class="language">
+                <form>
+                    <select v-model="$i18n.locale" class="langSelect">
+                        <option value="en">en</option>
+                        <option value="fr">fr</option>
+                        <option value="gu">gu</option>
+                        <option value="hi">hi</option>
+                    </select>
+                </form>
+            </div>
         </div>
     </div>
 </template>
@@ -33,13 +37,15 @@ definePageMeta({
     middleware: 'auth'
 })
 import { useCarStore } from '../stores/car'
+import { useUserStore } from '../stores/user'
 const carStore = useCarStore()
+const userStore = useUserStore()
+
 const { data, error } = await useFetchCars();
 if (error.value) {
     throw createError(error);
 }
 carStore.cars = data.value
-
 const showCarForm = () => {
     carStore.togglePopup = true
     carStore.title = "Add Car"
@@ -60,6 +66,28 @@ body::before {
     background-position: center center;
     opacity: 0.1;
     z-index: -1;
+}
+
+.loader {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border: 10px solid #f3f3f3;
+    border-top: 10px solid #20aa37;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 /* Car Form transition */

@@ -84,8 +84,10 @@ export default {
                     age: this.user.age,
                     dob: this.user.dob
                 }
-                // this.signupUser(newUser);
-                const user = await useRegisterUser(newUser);
+                const { registered: user, error } = await useRegisterUser(newUser);
+                if (error.value) {
+                    return alert("Error code: " + error.value.statusCode + " - " + error.value.statusMessage)
+                }
                 if (user) {
                     this.isLoggedIn = true;
                     localStorage.setItem("isLoggedIn", true);

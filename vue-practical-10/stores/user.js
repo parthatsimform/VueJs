@@ -4,6 +4,7 @@ import { defineStore } from "pinia";
 export const useUserStore = defineStore("user", {
 	state: () => ({
 		isLoggedIn: null,
+		loading: true,
 		user: {
 			name: "",
 			email: "",
@@ -18,11 +19,9 @@ export const useUserStore = defineStore("user", {
 	persist: true,
 	actions: {
 		async initialize() {
-			if (process.client) {
-				this.isLoggedIn = await JSON.parse(
-					localStorage.getItem("isLoggedIn")
-				);
-			}
+			this.isLoggedIn = await JSON.parse(
+				localStorage.getItem("isLoggedIn")
+			);
 		},
 		logOut() {
 			if (process.client) {
