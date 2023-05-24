@@ -1,5 +1,6 @@
 import Axios from "axios";
 export default defineEventHandler(async (event) => {
+	const url = useRuntimeConfig().public.CAR_URL;
 	const { id } = event.context.params;
 	let headers = {};
 	let data = {};
@@ -8,9 +9,7 @@ export default defineEventHandler(async (event) => {
 			"token"
 		)}`;
 	}
-	const res = await Axios.get(`${import.meta.env.VITE_CAR_URL}/${id}`, {
-		headers,
-	});
+	const res = await Axios.get(`${url}/${id}`, { headers });
 	data = await res.data;
 	return data;
 });

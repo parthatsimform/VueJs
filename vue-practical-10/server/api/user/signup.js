@@ -1,7 +1,8 @@
 import Axios from "axios";
 export default defineEventHandler(async (event) => {
+	const url = useRuntimeConfig().public.USER_URL;
 	const newUser = await readBody(event);
-	const res = await Axios.post(import.meta.env.VITE_USER_URL, newUser);
+	const res = await Axios.post(url, newUser);
 	if (res.status === 201) {
 		return true;
 	}

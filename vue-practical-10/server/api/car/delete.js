@@ -1,5 +1,6 @@
 import Axios from "axios";
 export default defineEventHandler(async (event) => {
+	const url = useRuntimeConfig().public.CAR_URL;
 	const id = await readBody(event);
 	let headers = {};
 	if (process.client) {
@@ -7,7 +8,7 @@ export default defineEventHandler(async (event) => {
 			"token"
 		)}`;
 	}
-	const res = await Axios.delete(`${import.meta.env.VITE_CAR_URL}/${id}`, {
+	const res = await Axios.delete(`${url}/${id}`, {
 		headers,
 	});
 	if (res.status === 204) {
