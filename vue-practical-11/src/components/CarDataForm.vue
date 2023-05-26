@@ -13,17 +13,20 @@
             <hr />
             <form class="carForm" @submit.prevent="addOrEditCarData">
                 <label for="carName">Car Name:</label>
-                <input id="carName" v-model="formData.name" @input="validateName" ref="nameInput" />
-                <div class="nameError"></div>
+                <input id="carName" v-model="carStore.car.name" @input="validation.validateCarName(carNameInput)"
+                    ref="carNameInput" />
+                <div class="carNameError"></div>
                 <label for="carImage">Car Image:</label>
-                <input id="carImage" v-model="formData.image" @input="validateImage" ref="imageInput" />
+                <input id="carImage" v-model="carStore.car.image" @input="validation.validateImage(imageInput)"
+                    ref="imageInput" />
                 <div class="imageError"></div>
                 <label for="cardetails">Details:</label>
-                <textarea id="cardetails" cols="30" rows="4" v-model="formData.details" @change="validatedetails"
-                    ref="detailsInput" />
+                <textarea id="cardetails" cols="30" rows="4" v-model="carStore.car.details"
+                    @change="validation.validateDetails(detailsInput)" ref="detailsInput" />
                 <div class="detailsError"></div>
                 <label for="carPrice">Car Price(₹):</label>
-                <input id="carPrice" v-model="formData.price" @input="validatePrice" ref="priceInput" />
+                <input id="carPrice" v-model="carStore.car.price" @input="validation.validatePrice(priceInput)"
+                    ref="priceInput" />
                 <div class="priceError"></div>
                 <button type="submit" id="submitForm">Submit</button>
             </form>
@@ -32,106 +35,56 @@
 </template>
 
 <script setup>
-import { ref, reactive } from 'vue';
+import { ref } from 'vue';
 import { useCarStore } from '../stores/car'
+import useServices from '../composables/services.js'
+import useValidations from '../composables/useValidations'
+
+const validation = useValidations()
+const service = useServices()
 const carStore = useCarStore()
 
-let nameInput = ref(null)
+let carNameInput = ref(null)
 let imageInput = ref(null)
 let detailsInput = ref(null)
 let priceInput = ref(null)
 
-const formData = reactive({
-    id: null,
-    name: '',
-    image: '',
-    details: '',
-    price: ''
-})
-
 if (carStore.title == "Edit Car") {
-    formData.id = carStore.editableCar.id
-    formData.name = carStore.editableCar.name
-    formData.image = carStore.editableCar.image
-    formData.details = carStore.editableCar.details
-    formData.price = carStore.editableCar.price
-}
-
-const urlChacker = () => {
-    const urlPattern = /^((https?:)?\/\/)?[^\s]+\.(jpe?g|png|gif|bmp|webp)(\?\S*)?$/i;
-    return urlPattern.test(formData.image);
-}
-
-const showError = (ref, errDiv, err) => {
-    ref.value.focus();
-    ref.value.style.border = "1px solid red";
-    document.getElementsByClassName(errDiv)[0].innerHTML = err;
-}
-
-const removeError = (ref, errDiv) => {
-    ref.value.style.border = "1px solid rgb(192, 192, 192)";
-    document.getElementsByClassName(errDiv)[0].innerHTML = "";
+    carStore.car.id = carStore.editableCar.id
+    carStore.car.name = carStore.editableCar.name
+    carStore.car.image = carStore.editableCar.image
+    carStore.car.details = carStore.editableCar.details
+    carStore.car.price = carStore.editableCar.price
 }
 
 const closePopup = () => {
     carStore.togglePopup = false;
 }
 
-const validateName = () => {
-    if (formData.name === "") {
-        showError(nameInput, 'nameError', "*Car name is required")
-        return false;
-    } else {
-        removeError(nameInput, 'nameError');
-        return true;
-    }
-}
-
-const validateImage = () => {
-    if (!urlChacker()) {
-        showError(imageInput, 'imageError', "*Please enter a valid image URL");
-        return false;
-    } else {
-        removeError(imageInput, 'imageError');
-        return true;
-    }
-}
-
-const validatedetails = () => {
-    if (formData.details === "" || formData.details.length < 30 || formData.details.length > 120) {
-        showError(detailsInput, 'detailsError', "*Car detail in limit of 30 to 120 characters is required");
-        return false;
-    } else {
-        removeError(detailsInput, 'detailsError');
-        return true;
-    }
-}
-
-const validatePrice = () => {
-    if (formData.price !== "" && Number.isInteger(Number(formData.price))) {
-        removeError(priceInput, 'priceError');
-        return true;
-    } else {
-        showError(priceInput, 'priceError', "*Car Price in integer is required");
-        return false;
-    }
-}
-
 const addOrEditCarData = () => {
-    if (validateName() && validateImage() && validatedetails() && validatePrice()) {
+    if (validation.validateCarName(carNameInput.value) &&
+        validation.validateImage(imageInput.value) &&
+        validation.validateDetails(detailsInput.value) &&
+        validation.validatePrice(priceInput.value)
+    ) {
         const car = {
-            name: formData.name,
-            image: formData.image,
-            details: formData.details,
-            price: formData.price,
+            name: carStore.car.name,
+            image: carStore.car.image,
+            details: carStore.car.details,
+            price: carStore.car.price,
         }
         if (carStore.title == "Add Car") {
-            carStore.newCarData(car);
+            service.newCarData(car);
         }
         if (carStore.title == "Edit Car") {
-            car.id = formData.id;
-            carStore.changeCarData(car);
+            car.id = carStore.car.id;
+            service.changeCarData(car);
         }
+    } else {
+        validation.validateCarName(carNameInput.value)
+        validation.validateImage(imageInput.value)
+        validation.validateDetails(detailsInput.value)
+        validation.validatePrice(priceInput.value)
     }
 }
 </script>
@@ -216,13 +169,12 @@ input[type=number] {
     -moz-appearance: textfield;
 }
 
-.nameError,
+.carNameError,
 .imageError,
 .detailsError,
 .priceError {
     color: red;
 }
-
 
 #submitForm {
     background-color: #e8ffdd;

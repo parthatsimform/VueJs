@@ -21,11 +21,13 @@
 <script setup>
 import GalleryCard from '../components/GalleryCard.vue';
 import CarDataForm from '../components/CarDataForm.vue';
+import useServices from '../composables/services'
 import { useCarStore } from '../stores/car'
 
 const carStore = useCarStore()
+const service = useServices()
 
-carStore.getCars();
+service.getCars()
 </script>
 
 <style>

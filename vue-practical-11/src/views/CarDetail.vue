@@ -25,10 +25,14 @@
 <script setup>
 import { useRoute } from 'vue-router';
 import { useCarStore } from '../stores/car';
+import useServices from '../composables/services.js'
+
 const carStore = useCarStore()
+const service = useServices()
 const route = useRoute()
+
 carStore.carID = route.params.id
-carStore.getCar()
+service.getCar()
 </script>
 
 <style scoped>

@@ -12,7 +12,7 @@
                 <h2>{{ car.name }}</h2>
             </div>
             <div class="deleteBtnDiv">
-                <button class="deleteBtn" @click.prevent.stop="carStore.removeCar(props.car)" title="Delete"><i
+                <button class="deleteBtn" @click.prevent.stop="service.removeCar(props.car)" title="Delete"><i
                         class="fa-solid fa-trash-can"></i>
                 </button>
             </div>
@@ -34,7 +34,9 @@
 
 <script setup>
 import { useCarStore } from '../stores/car';
+import useServices from '../composables/services.js'
 const carStore = useCarStore()
+const service = useServices()
 const props = defineProps(["car"])
 </script>
 
