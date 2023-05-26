@@ -15,7 +15,7 @@
                     <p>{{ carStore.loadCar.details }}</p>
                 </div>
                 <div class="carPrice">
-                    <p>Price:&nbsp;<span>₹{{ carStore.loadCar.price }}</span></p>
+                    <p>{{ $t('price') }}:&nbsp;<span>₹{{ carStore.loadCar.price }}</span></p>
                 </div>
             </div>
         </div>

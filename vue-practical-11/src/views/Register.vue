@@ -2,28 +2,28 @@
     <div class="register">
         <div class="formHeader">
             <h2 class="formTitle">
-                Register
+                {{ $t('register') }}
             </h2>
         </div>
         <hr />
         <form class="registerForm" @submit.prevent="registerUser">
-            <label for="name">Name:</label>
+            <label for="name">Name*</label>
             <input type="text" id="name" v-model="userStore.user.name" @input="validation.validateName(nameInput)"
                 ref="nameInput">
             <div class="nameError"></div>
-            <label for="email">Email:</label>
+            <label for="email">Email*</label>
             <input type="text" id="email" v-model="userStore.user.email" @input="validation.validateEmail(emailInput)"
                 ref="emailInput" />
             <div class="emailError"></div>
-            <label for="password">Password:</label>
+            <label for="password">Password*</label>
             <input type="password" id="password" v-model="userStore.user.password"
                 @input="validation.validatePassword(passwordInput)" ref="passwordInput" />
             <div class="passwordError"></div>
-            <label for="cPassword">Confirm Password:</label>
+            <label for="cPassword">Confirm Password*</label>
             <input type="password" id="cPassword" v-model="userStore.user.cPassword"
                 @input="validation.validateCPassword(cPasswordInput)" ref="cPasswordInput" />
             <div class="cPasswordError"></div>
-            <label for="role">Role:</label>
+            <label for="role">Role*</label>
             <select name="role" id="role" v-model="userStore.user.role" @change="validation.validateRole(roleInput)"
                 ref="roleInput">
                 <option value="" selected disabled>Select Role</option>
@@ -33,7 +33,7 @@
             </select>
             <div class="roleError"></div>
             <div class="genderSelect">
-                <label for="gender">Gender:</label>
+                <label for="gender">Gender*</label>
                 <span class="maleRadio">
                     <input type="radio" id="male" value="Male" v-model="userStore.user.gender"
                         @change="validation.validateGender(genderInput)" ref="genderInput" />
@@ -46,14 +46,14 @@
                 </span>
                 <div class="genderError"></div>
             </div>
-            <label for="age">Age:</label>
+            <label for="age">Age*</label>
             <input id="age" v-model="userStore.user.age" @input="validation.validateAge(ageInput)" ref="ageInput" />
             <div class="ageError"></div>
-            <label for="dob">DOB:</label>
+            <label for="dob">DOB*</label>
             <input type="date" id="dob" v-model="userStore.user.dob" @change="validation.validateDOB(dobInput)"
                 ref="dobInput" />
             <div class="dobError"></div>
-            <button type="submit" class="submitForm">Register</button>
+            <button type="submit" class="submitForm">{{ $t('register') }}</button>
         </form>
     </div>
 </template>

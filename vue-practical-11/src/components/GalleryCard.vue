@@ -26,7 +26,7 @@
 
         <div class="info">
             <RouterLink :to="{ name: 'details', params: { id: `${car.id}` } }" class="infoBtn">
-                INFO
+                {{ $t('info') }}
             </RouterLink>
         </div>
     </div>

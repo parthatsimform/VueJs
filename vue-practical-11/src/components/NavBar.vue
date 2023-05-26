@@ -3,17 +3,18 @@
         <div class="navContent">
             <h1>
                 <RouterLink :to="{ name: 'home' }" exact-active-class="no-active" class="navBarBrand">
-                    <span>Car Gallery</span>
+                    <span>{{ $t('brand') }}</span>
                 </RouterLink>
             </h1>
             <div class="navBtns">
                 <template v-if="!userStore.isLoggedIn">
-                    <RouterLink :to="{ name: 'login' }" class="navBtn">Login</RouterLink>
-                    <RouterLink :to="{ name: 'register' }" class="navBtn">Register</RouterLink>
+                    <RouterLink :to="{ name: 'login' }" class="navBtn">{{ $t('login') }}</RouterLink>
+                    <RouterLink :to="{ name: 'register' }" class="navBtn">{{ $t('register') }}</RouterLink>
                 </template>
                 <template v-else>
-                    <RouterLink :to="{ name: 'home' }" class="navBtn">Home</RouterLink>
-                    <RouterLink :to="{ name: 'login' }" @click="userStore.logOut" class="navBtn">LogOut</RouterLink>
+                    <RouterLink :to="{ name: 'home' }" class="navBtn">{{ $t('home') }}</RouterLink>
+                    <RouterLink :to="{ name: 'login' }" @click="userStore.logOut" class="navBtn">{{ $t('logout') }}
+                    </RouterLink>
                 </template>
             </div>
         </div>

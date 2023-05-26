@@ -5,7 +5,7 @@
         </Transition>
         <div id="homeComponent" :class="{ fadeBG: carStore.togglePopup }">
             <div id="addCar">
-                <button class="addCarBtn" @click.prevent.stop="carStore.showCarForm">+ Add Car</button>
+                <button class="addCarBtn" @click.prevent.stop="carStore.showCarForm">+ {{ $t('caradd') }}</button>
             </div>
             <div id="carComponent">
                 <TransitionGroup name="carCard" appear>

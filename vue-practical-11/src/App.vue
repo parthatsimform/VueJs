@@ -8,6 +8,7 @@
         </Transition>
       </RouterView>
     </Suspense>
+    <Translate />
   </div>
 </template>
 

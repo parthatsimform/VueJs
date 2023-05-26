@@ -3,7 +3,7 @@
         <div class="carData">
             <div class="formHeader">
                 <div class="formTitle">
-                    <h2>{{ carStore.title }}</h2>
+                    <h2>{{ $t(carStore.title) }}</h2>
                 </div>
                 <div class="closePopup" @click="closePopup">
                     <i class="fa-solid fa-xmark"></i>
@@ -12,19 +12,19 @@
 
             <hr />
             <form class="carForm" @submit.prevent="addOrEditCarData">
-                <label for="carName">Car Name:</label>
+                <label for="carName">Car Name*</label>
                 <input id="carName" v-model="carStore.car.name" @input="validation.validateCarName(carNameInput)"
                     ref="carNameInput" />
                 <div class="carNameError"></div>
-                <label for="carImage">Car Image:</label>
+                <label for="carImage">Car Image*</label>
                 <input id="carImage" v-model="carStore.car.image" @input="validation.validateImage(imageInput)"
                     ref="imageInput" />
                 <div class="imageError"></div>
-                <label for="cardetails">Details:</label>
+                <label for="cardetails">Details*</label>
                 <textarea id="cardetails" cols="30" rows="4" v-model="carStore.car.details"
                     @change="validation.validateDetails(detailsInput)" ref="detailsInput" />
                 <div class="detailsError"></div>
-                <label for="carPrice">Car Price(₹):</label>
+                <label for="carPrice">Car Price(₹)*</label>
                 <input id="carPrice" v-model="carStore.car.price" @input="validation.validatePrice(priceInput)"
                     ref="priceInput" />
                 <div class="priceError"></div>
@@ -49,7 +49,7 @@ let imageInput = ref(null)
 let detailsInput = ref(null)
 let priceInput = ref(null)
 
-if (carStore.title == "Edit Car") {
+if (carStore.title == "editcar") {
     carStore.car.id = carStore.editableCar.id
     carStore.car.name = carStore.editableCar.name
     carStore.car.image = carStore.editableCar.image
@@ -59,6 +59,10 @@ if (carStore.title == "Edit Car") {
 
 const closePopup = () => {
     carStore.togglePopup = false;
+    carStore.car.name = ""
+    carStore.car.image = ""
+    carStore.car.details = ""
+    carStore.car.price = ""
 }
 
 const addOrEditCarData = () => {
@@ -73,10 +77,10 @@ const addOrEditCarData = () => {
             details: carStore.car.details,
             price: carStore.car.price,
         }
-        if (carStore.title == "Add Car") {
+        if (carStore.title == "caradd") {
             service.newCarData(car);
         }
-        if (carStore.title == "Edit Car") {
+        if (carStore.title == "editcar") {
             car.id = carStore.car.id;
             service.changeCarData(car);
         }

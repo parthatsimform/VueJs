@@ -25,12 +25,12 @@ export const useCarStore = defineStore("car", {
 	actions: {
 		editFormOpen(car) {
 			this.togglePopup = true;
-			this.title = "Edit Car";
+			this.title = "editcar";
 			this.editableCar = car;
 		},
 		showCarForm() {
 			this.togglePopup = true;
-			this.title = "Add Car";
+			this.title = "caradd";
 		},
 	},
 });

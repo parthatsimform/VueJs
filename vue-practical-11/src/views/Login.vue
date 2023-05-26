@@ -2,20 +2,20 @@
     <div class="login">
         <div class="formHeader">
             <h2 class="formTitle">
-                Login
+                {{ $t('login') }}
             </h2>
         </div>
         <hr />
         <form class="loginForm" @submit.prevent="loginUser">
-            <label for="email">Email:</label>
+            <label for="email">Email</label>
             <input type="text" id="email" v-model="userStore.user.email" @input="validation.validateEmail(emailInput)"
                 ref="emailInput" />
             <div class="emailError"></div>
-            <label for="password">Password:</label>
+            <label for="password">Password</label>
             <input type="password" id="password" v-model="userStore.user.password"
                 @input="validation.validatePassword(passwordInput)" ref="passwordInput" />
             <div class="passwordError"></div>
-            <button type="submit" class="submitForm">Login</button>
+            <button type="submit" class="submitForm">{{ $t('login') }}</button>
         </form>
     </div>
 </template>
