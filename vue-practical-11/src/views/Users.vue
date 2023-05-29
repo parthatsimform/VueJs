@@ -42,7 +42,15 @@
                         <td class="text-center">{{ user.gender }}</td>
                         <td class="text-center">{{ user.age }}</td>
                         <td class="text-center">{{ user.dob }}</td>
-                        <td class="text-center"><span :class="{ adminColor: user.role == 'admin' }">{{ user.role }}</span>
+                        <td class="text-center">
+                            <template v-if="user.role == 'admin'">
+                                <v-chip class="ma-2" color="red" text-color="white">
+                                    {{ user.role }}
+                                </v-chip>
+                            </template>
+                            <template v-else>
+                                {{ user.role }}
+                            </template>
                         </td>
                     </tr>
                 </tbody>
