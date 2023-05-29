@@ -108,6 +108,8 @@ export default () => {
 			);
 			if (res.status === 201) {
 				userStore.isLoggedIn = true;
+				userStore.role = user.role;
+				window.localStorage.setItem("role", newUser.role);
 				window.localStorage.setItem("isLoggedIn", true);
 				window.localStorage.setItem("token", `ThisIsRandomKey`);
 				router.push({ name: "home" });
@@ -129,6 +131,8 @@ export default () => {
 			);
 			if (user) {
 				userStore.isLoggedIn = true;
+				userStore.role = user.role;
+				window.localStorage.setItem("role", user.role);
 				window.localStorage.setItem("isLoggedIn", true);
 				window.localStorage.setItem("token", `ThisIsRandomKey`);
 				router.push({ name: "home" });

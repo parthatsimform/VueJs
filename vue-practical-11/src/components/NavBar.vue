@@ -13,6 +13,8 @@
                 </template>
                 <template v-else>
                     <RouterLink :to="{ name: 'home' }" class="navBtn">{{ $t('home') }}</RouterLink>
+                    <RouterLink v-if="userStore.role === 'admin'" :to="{ name: 'userlist' }" class="navBtn">Users
+                    </RouterLink>
                     <RouterLink :to="{ name: 'login' }" @click="userStore.logOut" class="navBtn">{{ $t('logout') }}
                     </RouterLink>
                 </template>

@@ -62,6 +62,19 @@ const routes = [
 			}
 		},
 	},
+	{
+		path: "/userlist",
+		name: "userlist",
+		component: () => import("../views/Users.vue"),
+		beforeEnter: (to, from, next) => {
+			if (window.localStorage.getItem("role") == "admin") {
+				next();
+			} else {
+				alert("Only admins can see users list");
+				next("/login");
+			}
+		},
+	},
 ];
 
 const router = createRouter({
