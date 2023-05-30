@@ -5,7 +5,7 @@
         </div>
         <div class="carDetail">
             <div class="carImg">
-                <img :src="carStore.loadCar.image" :alt="carStore.loadCar.name" />
+                <img class="imgSelector" :src="carStore.loadCar.image" :alt="carStore.loadCar.name" />
             </div>
             <div class="carInfo">
                 <div class="carName">
@@ -23,16 +23,18 @@
 </template>
 
 <script setup>
-import { useRoute } from 'vue-router';
+// import { useRoute } from 'vue-router';
 import { useCarStore } from '../stores/car';
 import useServices from '../composables/services.js'
 
 const carStore = useCarStore()
 const service = useServices()
-const route = useRoute()
+// const route = useRoute()
+const props = defineProps(['id'])
 
-carStore.carID = route.params.id
+carStore.carID = props.id
 service.getCar()
+// carStore.loadCar
 </script>
 
 <style scoped>

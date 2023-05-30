@@ -79,10 +79,12 @@ const addOrEditCarData = () => {
         }
         if (carStore.title == "caradd") {
             service.newCarData(car);
+            closePopup()
         }
         if (carStore.title == "editcar") {
             car.id = carStore.car.id;
             service.changeCarData(car);
+            closePopup()
         }
     } else {
         validation.validateCarName(carNameInput.value)

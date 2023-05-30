@@ -9,7 +9,7 @@
                 </div>
             </Transition>
             <div class="cardTitle">
-                <h2>{{ car.name }}</h2>
+                <h2>{{ props.car.name }}</h2>
             </div>
             <div class="deleteBtnDiv">
                 <button class="deleteBtn" @click.prevent.stop="service.removeCar(props.car)" title="Delete"><i
@@ -25,7 +25,7 @@
         </div>
 
         <div class="info">
-            <RouterLink :to="{ name: 'details', params: { id: `${car.id}` } }" class="infoBtn">
+            <RouterLink :to="{ name: 'details', params: { id: `${car.id}` } }" :id="car.id" class="infoBtn">
                 {{ $t('info') }}
             </RouterLink>
         </div>

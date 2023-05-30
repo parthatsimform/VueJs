@@ -99,6 +99,13 @@ export default () => {
 		}
 	};
 
+	const getAllUsers = async () => {
+		const userStore = useUserStore();
+		const res = await Axios.get(import.meta.env.VITE_USER_URL);
+		const data = await res.data.data;
+		userStore.all = data;
+	};
+
 	const signupUser = async (newUser) => {
 		const userStore = useUserStore();
 		try {
@@ -152,5 +159,6 @@ export default () => {
 		removeCar,
 		signupUser,
 		signinUser,
+		getAllUsers,
 	};
 };

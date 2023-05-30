@@ -34,7 +34,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="user in  allUsers " :key="user.id">
+                    <tr class="singleUser" v-for="user in userStore.all" :key="user.id">
                         <td class="text-center">{{ user.id }}</td>
                         <td class="text-center">{{ user.name }}</td>
                         <td class="text-center">{{ user.email }}</td>
@@ -60,12 +60,11 @@
 </template>
 
 <script setup>
-import Axios from 'axios';
-
-let allUsers;
-const res = await Axios.get(import.meta.env.VITE_USER_URL);
-const data = await res.data.data
-allUsers = await data
+import useServices from '../composables/services'
+import { useUserStore } from '../stores/user';
+const userStore = useUserStore()
+const service = useServices()
+service.getAllUsers();
 </script>
 
 <style scoped>

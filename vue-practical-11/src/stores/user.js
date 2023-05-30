@@ -4,6 +4,7 @@ export const useUserStore = defineStore("user", {
 	state: () => ({
 		isLoggedIn: window.localStorage.getItem("isLoggedIn"),
 		role: window.localStorage.getItem("role"),
+		all: [],
 		user: {
 			name: "",
 			email: "",
