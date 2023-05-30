@@ -3,19 +3,24 @@
         <div class="backBtn">
             <RouterLink :to="{ name: 'home' }"><i class="fa-solid fa-caret-left"></i> Back</RouterLink>
         </div>
-        <div class="carDetail">
-            <div class="carImg">
-                <img class="imgSelector" :src="carStore.loadCar.image" :alt="carStore.loadCar.name" />
-            </div>
-            <div class="carInfo">
-                <div class="carName">
-                    <h2>{{ carStore.loadCar.name }}</h2>
+        <div v-if="carStore.car.name == ''" class="loaderContainer">
+            <div class="loader"></div>
+        </div>
+        <div v-else>
+            <div class="carDetail">
+                <div class="carImg">
+                    <img class="imgSelector" :src="carStore.loadCar.image" :alt="carStore.loadCar.name" />
                 </div>
-                <div class="carDesc">
-                    <p>{{ carStore.loadCar.details }}</p>
-                </div>
-                <div class="carPrice">
-                    <p>{{ $t('price') }}:&nbsp;<span>₹{{ carStore.loadCar.price }}</span></p>
+                <div class="carInfo">
+                    <div class="carName">
+                        <h2>{{ carStore.loadCar.name }}</h2>
+                    </div>
+                    <div class="carDesc">
+                        <p>{{ carStore.loadCar.details }}</p>
+                    </div>
+                    <div class="carPrice">
+                        <p>{{ $t('price') }}:&nbsp;<span>₹{{ carStore.loadCar.price }}</span></p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -23,18 +28,26 @@
 </template>
 
 <script setup>
-// import { useRoute } from 'vue-router';
 import { useCarStore } from '../stores/car';
 import useServices from '../composables/services.js'
+import { onBeforeUnmount } from 'vue';
+import { useRoute } from 'vue-router';
 
+const route = useRoute()
 const carStore = useCarStore()
 const service = useServices()
-// const route = useRoute()
-const props = defineProps(['id'])
 
-carStore.carID = props.id
+carStore.carID = route.params.id
 service.getCar()
-// carStore.loadCar
+
+onBeforeUnmount(() => {
+    carStore.car = {
+        name: "",
+        image: "",
+        details: "",
+        price: "",
+    }
+})
 </script>
 
 <style scoped>

@@ -3,7 +3,10 @@
         <div class="heading">
             <h1>User List</h1>
         </div>
-        <v-container class="userContainer">
+        <div v-if="userStore.all == ''" class="loaderContainer">
+            <div class="loader"></div>
+        </div>
+        <v-container v-else class="userContainer">
             <v-table fixed-header height="70vh" class="userTable">
                 <thead>
                     <tr>

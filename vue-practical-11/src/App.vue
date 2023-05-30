@@ -23,7 +23,49 @@ if (import.meta.env.MODE === 'production') {
 }
 </script>
 
-<style scoped>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Roboto:wght@500&display=swap');
+
+body::before {
+  content: "";
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-image: url("/background.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  opacity: 0.1;
+  z-index: -1;
+}
+
+.loaderContainer {
+  width: 90vw;
+  height: 78vh;
+}
+
+.loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border: 10px solid #f3f3f3;
+  border-top: 10px solid #20aa37;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 .route-enter-from,
 .route-leave-to {
   opacity: 0;

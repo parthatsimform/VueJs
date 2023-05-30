@@ -103,7 +103,7 @@ export default () => {
 		const userStore = useUserStore();
 		const res = await Axios.get(import.meta.env.VITE_USER_URL);
 		const data = await res.data.data;
-		userStore.all = data;
+		userStore.all = await data;
 	};
 
 	const signupUser = async (newUser) => {

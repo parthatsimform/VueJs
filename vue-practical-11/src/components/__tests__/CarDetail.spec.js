@@ -7,9 +7,11 @@ import { RouterLinkStub, shallowMount } from "@vue/test-utils";
 
 describe("CarDetail.vue", () => {
 	test("renders correct car data", async () => {
-		const store = useCarStore(createPinia());
-		const res = await Axios.get(`${import.meta.env.VITE_CAR_URL}/2244`);
-		const carData = (store.car = await res.data);
+		const carStore = useCarStore(createPinia());
+		const res = await Axios.get(
+			`${import.meta.env.VITE_CAR_URL}/${localStorage.getItem("carID")}`
+		);
+		const carData = (carStore.car = await res.data);
 		const component = shallowMount(CarDetail, {
 			global: {
 				mocks: {

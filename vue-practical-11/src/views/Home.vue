@@ -8,7 +8,10 @@
                 <button class="addCarBtn" @click.prevent.stop="carStore.showCarForm">+ {{ $t('caradd') }}</button>
             </div>
             <div id="carComponent">
-                <TransitionGroup name="carCard" appear>
+                <div v-if="carStore.cars == ''" class="loaderContainer">
+                    <div class="loader"></div>
+                </div>
+                <TransitionGroup v-else name="carCard" appear>
                     <div v-for="car in carStore.loadAllCars" :key="car.id">
                         <GalleryCard :car="car" />
                     </div>
@@ -30,22 +33,7 @@ const service = useServices()
 service.getCars()
 </script>
 
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Roboto:wght@500&display=swap');
-
-body::before {
-    content: "";
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    background-image: url("../assets/background.jpg");
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center center;
-    opacity: 0.1;
-    z-index: -1;
-}
-
+<style scoped>
 /* Car Form transition */
 .form-enter-from,
 .form-leave-to {

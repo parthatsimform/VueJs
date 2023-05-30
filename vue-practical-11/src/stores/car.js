@@ -5,14 +5,14 @@ export const useCarStore = defineStore("car", {
 		togglePopup: false,
 		title: "",
 		editableCar: {},
-		cars: [],
+		cars: "",
 		car: {
 			name: "",
 			image: "",
 			details: "",
 			price: "",
 		},
-		carID: "",
+		carID: null,
 	}),
 	getters: {
 		loadAllCars() {

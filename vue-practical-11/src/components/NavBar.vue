@@ -29,10 +29,6 @@ const userStore = useUserStore()
 </script>
 
 <style scoped>
-nav {
-    background-color: white;
-}
-
 .navContent {
     display: flex;
     justify-content: space-between;
@@ -41,6 +37,7 @@ nav {
     margin: 0 auto;
     padding: 0 2%;
     border-bottom: 1px solid green;
+    background-color: white;
 }
 
 h1 {
